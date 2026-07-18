@@ -1,0 +1,109 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #2563eb, #ffffff);
+}
+
+.login-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-card {
+  width: 420px;
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+.login-card h2 {
+  text-align: center;
+  color: #2563eb;
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.login-card p {
+  text-align: center;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+/* Medium text boxes */
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  color: #2563eb;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.input-group input {
+  width: 90%;              /* Medium width */
+  margin: auto;
+  display: block;
+  height: 45px;             /* Medium height */
+  padding: 10px 15px;
+  background: #ffffff;
+  color: #000;
+  border: 2px solid #2563eb;
+  border-radius: 25px;
+  font-size: 15px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.input-group input:focus {
+  width: 100%;
+  border-color: #1d4ed8;
+  box-shadow: 0 0 10px rgba(37, 99, 235, 0.3);
+}
+
+.input-group input::placeholder {
+  color: #999;
+}
+
+/* Login Button */
+.login-btn {
+  width: 90%;
+  height: 45px;
+  display: block;
+  margin: 25px auto;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 17px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-btn:hover {
+  background: #1d4ed8;
+  transform: scale(1.03);
+}
+
+.footer-links {
+  text-align: center;
+}
+
+.footer-links a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.footer-links p {
+  margin-top: 15px;
+}

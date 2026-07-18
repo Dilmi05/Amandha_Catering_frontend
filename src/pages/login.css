@@ -1,0 +1,18 @@
+.input-group input {
+  width: 100%;
+  padding: 12px;
+  background: #ffffff;   /* White textbox background */
+  color: #000000;        /* Black text */
+  border: 1px solid #2563eb;
+  border-radius: 8px;
+  outline: none;
+}
+
+.input-group input::placeholder {
+  color: #777777;        /* Placeholder text color */
+}
+
+.input-group input:focus {
+  border: 2px solid #1d4ed8;
+  background: #ffffff;
+}
