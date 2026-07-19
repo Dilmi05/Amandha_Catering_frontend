@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "./login.css";
+import axios from "axios";
 
 
 function Login(){
@@ -19,20 +20,19 @@ async function handleLogin(e) {
     try {
 
         const response = await axios.post(
-            "http://localhost:8080/catering-backend/login",
+    "http://localhost:8080/catering-backend/login",
 
-            new URLSearchParams({
-                email: email,
-                password: password
-            }),
+    new URLSearchParams({
+        email,
+        password
+    }),
 
-            {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                }
-            }
-        );
-
+    {
+        headers:{
+            "Content-Type":"application/x-www-form-urlencoded"
+        }
+    }
+);
         if (response.data === "success") {
 
             navigate("/home");
