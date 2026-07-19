@@ -1,7 +1,8 @@
 import "./home.css";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../pages/cartcontext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 
 function Home() {
@@ -12,42 +13,35 @@ const { addToCart, cart } = useContext(CartContext);
 const navigate = useNavigate();
 
 
+const [items, setItems] = useState([]);
 
-const items = [
-  {
-    item_id: 1,
-    item_name: "Dinner Plates",
-    image: "https://images.unsplash.com/photo-1547592180-85f173990554",
-    price: 50
-  },
 
-  {
-    item_id: 2,
-    item_name: "Round Tables",
-    image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3",
-    price: 500
-  },
 
-  {
-    item_id: 3,
-    item_name: "Wedding Chairs",
-    image: "https://images.unsplash.com/photo-1505236858219-8359eb29e329",
-    price: 100
-  },
+useEffect(()=>{
 
-  {
-    item_id: 4,
-    item_name: "Glass Collection",
-    image: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd",
-    price: 30
-  }
-];
+
+    axios
+    .get("http://localhost:8080/api/items")
+    .then((response)=>{
+
+        setItems(response.data);
+
+    })
+    .catch((error)=>{
+
+        console.log("Error loading items:", error);
+
+    });
+
+
+},[]);
 
 
 
 return (
 
 <div className="home">
+
 
 
 <header className="home-header">
@@ -64,6 +58,7 @@ Quality catering equipment for your special events
 
 
 
+
 <div className="item-container">
 
 
@@ -71,21 +66,44 @@ Quality catering equipment for your special events
 items.map((item)=>(
 
 
-<div className="item-card" key={item.item_id}>
+<div 
+className="item-card" 
+key={item.itemId}
+>
 
+
+
+{/* Image placeholder because database has no image column */}
 
 <img
-src={item.image}
-alt={item.item_name}
+src="https://images.unsplash.com/photo-1547592180-85f173990554"
+alt={item.itemName}
 />
 
 
 
+
 <h2>
-{item.item_name}
+{item.itemName}
 </h2>
 
 
+
+<p>
+{item.description}
+</p>
+
+
+
+<p>
+Category: {item.category}
+</p>
+
+
+
+<p>
+Status: {item.available ? "Available" : "Not Available"}
+</p>
 
 <p>
 Rs. {item.price}
@@ -94,10 +112,19 @@ Rs. {item.price}
 
 
 <button
+
+disabled={!item.available}
+
 onClick={()=>addToCart(item)}
+
 >
-Book Now
+
+{
+item.available ? "Book Now" : "Not Available"
+}
+
 </button>
+
 
 
 
@@ -105,6 +132,7 @@ Book Now
 
 
 ))
+
 }
 
 
@@ -113,7 +141,7 @@ Book Now
 
 
 
-{/* Checkout Button Bottom */}
+
 
 <div className="bottom-checkout">
 
