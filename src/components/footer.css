@@ -1,0 +1,164 @@
+.footer {
+
+    background: linear-gradient(
+        135deg,
+        #001f4d,
+        #0066ff,
+        #00bfff
+    );
+
+    color: white;
+
+    padding: 45px 20px 25px;
+
+    margin-top: 50px;
+
+    text-align: center;
+
+    position: relative;
+
+    overflow: hidden;
+
+}
+
+
+/* Decorative circles */
+
+.footer::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 250px;
+
+    height: 250px;
+
+    background: rgba(255,255,255,0.15);
+
+    border-radius: 50%;
+
+    top: -120px;
+
+    left: -80px;
+
+}
+
+
+
+.footer::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 220px;
+
+    height: 220px;
+
+    background: rgba(255,255,255,0.1);
+
+    border-radius:50%;
+
+    bottom:-100px;
+
+    right:-70px;
+
+}
+
+
+
+
+.footer h2 {
+
+    font-size:32px;
+
+    margin-bottom:20px;
+
+    letter-spacing:1px;
+
+    position:relative;
+
+    z-index:1;
+
+}
+
+
+
+
+
+.footer-links {
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    gap:18px;
+
+    margin:25px 0;
+
+    position:relative;
+
+    z-index:1;
+
+}
+
+
+
+
+
+.footer-links a {
+
+    color:white;
+
+    text-decoration:none;
+
+    background:rgba(255,255,255,0.15);
+
+    padding:10px 18px;
+
+    border-radius:25px;
+
+    font-weight:600;
+
+    transition:0.3s;
+
+}
+
+
+
+
+
+.footer-links a:hover {
+
+    background:white;
+
+    color:#0066ff;
+
+    transform:translateY(-5px);
+
+    box-shadow:0 5px 15px rgba(0,0,0,0.3);
+
+}
+
+
+
+
+
+.footer p {
+
+    margin-top:25px;
+
+    font-size:14px;
+
+    opacity:0.9;
+
+    position:relative;
+
+    z-index:1;
+
+}

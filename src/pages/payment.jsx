@@ -4,6 +4,7 @@ import { CartContext } from "../pages/cartcontext";
 import "./payment.css";
 import { useNavigate } from "react-router-dom";
 import UserNavbar from "../components/UserNavbar";
+import UserFooter from "../components/Footer";
 
 function Payment() {
 
@@ -393,6 +394,9 @@ function Payment() {
                     </button>
 
                 </div>
+
+                <UserFooter />
+
 
             </div>
         </>

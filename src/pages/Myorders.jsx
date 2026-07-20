@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./myorders.css";
 import UserNavbar from "../components/UserNavbar";
+import Footer from "../components/Footer";
+
 
 function MyOrders() {
 
@@ -95,11 +97,14 @@ function MyOrders() {
 
         <div className="myorders-container">
 
+
             {/* Navbar */}
             <UserNavbar />
 
 
+
             <h1>My Orders</h1>
+
 
             {
                 loading ?
@@ -143,6 +148,7 @@ function MyOrders() {
                                     orders.map((order) => (
 
                                         <tr key={order.orderId}>
+
 
                                             <td>
                                                 {order.orderId}
@@ -215,6 +221,13 @@ function MyOrders() {
                         </table>
 
             }
+
+
+
+            {/* Footer */}
+
+            <Footer />
+
 
         </div>
 

@@ -2,11 +2,15 @@ import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { CartContext } from "../pages/cartcontext";
 import UserNavbar from "../components/UserNavbar";
+import Footer from "../components/Footer";
 import "./home.css";
+
 
 function Cart() {
 
+
     const navigate = useNavigate();
+
 
     const {
         cart,
@@ -14,6 +18,8 @@ function Cart() {
         decrease,
         removeItem
     } = useContext(CartContext);
+
+
 
     const total = cart.reduce(
 
@@ -25,44 +31,72 @@ function Cart() {
 
     );
 
+
+
+
     return (
+
 
         <div className="home">
 
+
             {/* Navbar */}
+
             <UserNavbar />
+
+
 
             <h1>
                 Your Cart
             </h1>
 
+
+
+
             {
                 cart.length === 0 ? (
 
+
                     <div className="empty-cart">
+
 
                         <h2>
                             Your Cart is Empty
                         </h2>
 
+
+
                         <Link to="/home">
+
 
                             <button className="continue-btn">
 
+
                                 Continue Shopping
+
 
                             </button>
 
+
                         </Link>
+
+
 
                     </div>
 
+
+
                 ) : (
+
+
 
                     <>
 
+
+
                         {
                             cart.map((item, index) => (
+
 
                                 <div
 
@@ -72,6 +106,9 @@ function Cart() {
 
                                 >
 
+
+
+
                                     <img
 
                                         src={item.image}
@@ -80,7 +117,15 @@ function Cart() {
 
                                     />
 
+
+
+
+
                                     <div className="cart-details">
+
+
+
+
 
                                         <h2>
 
@@ -88,13 +133,27 @@ function Cart() {
 
                                         </h2>
 
+
+
+
+
+
                                         <p>
 
                                             Price : Rs. {Number(item.price)}
 
                                         </p>
 
+
+
+
+
+
                                         <div className="quantity">
+
+
+
+
 
                                             <button
 
@@ -108,11 +167,22 @@ function Cart() {
 
                                             </button>
 
+
+
+
+
+
+
                                             <span>
 
                                                 {item.quantity}
 
                                             </span>
+
+
+
+
+
 
                                             <button
 
@@ -126,9 +196,21 @@ function Cart() {
 
                                             </button>
 
+
+
+
+
+
                                         </div>
 
+
+
+
+
+
+
                                         <p>
+
 
                                             <strong>
 
@@ -140,76 +222,173 @@ function Cart() {
                                                     Number(item.quantity)
                                                 }
 
+
                                             </strong>
+
 
                                         </p>
 
+
+
+
+
+
                                         <button
 
+
                                             className="remove-btn"
+
 
                                             onClick={() =>
                                                 removeItem(item.item_id)
                                             }
 
+
                                         >
+
 
                                             Remove
 
+
                                         </button>
+
+
+
+
+
 
                                     </div>
 
+
+
+
+
                                 </div>
+
+
 
                             ))
 
                         }
 
+
+
+
+
                         <hr />
+
+
+
+
+
 
                         <h2 className="total">
 
+
                             Total Amount : Rs. {total}
+
+
 
                         </h2>
 
+
+
+
+
+
+
                         <div className="cart-buttons">
+
+
+
+
+
 
                             <Link to="/home">
 
+
+
                                 <button className="continue-btn">
+
+
 
                                     Continue Shopping
 
+
+
                                 </button>
+
+
 
                             </Link>
 
+
+
+
+
+
+
+
                             <button
+
 
                                 className="checkout-btn"
 
+
                                 onClick={() => navigate("/payment")}
+
 
                             >
 
+
                                 Checkout
+
 
                             </button>
 
+
+
+
+
+
                         </div>
+
+
+
+
+
+
 
                     </>
 
+
+
                 )
+
+
 
             }
 
+
+
+
+
+            {/* Footer */}
+
+            <Footer />
+
+
+
+
         </div>
+
+
 
     );
 
+
+
 }
+
 
 export default Cart;

@@ -1,0 +1,1453 @@
+.static-page {
+
+    min-height: 100vh;
+    background: linear-gradient(
+        135deg,
+        #e3f2fd,
+        #ffffff,
+        #bbdefb
+    );
+
+    padding-bottom: 40px;
+
+    font-family: "Poppins", sans-serif;
+
+}
+
+
+/* Main content */
+
+.content-box {
+
+    width: 85%;
+
+    margin: 50px auto;
+
+    background: rgba(255,255,255,0.9);
+
+    padding: 40px;
+
+    border-radius: 25px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.15);
+
+    animation: fadeIn 0.8s ease;
+
+}
+
+
+
+.content-box h1 {
+
+    text-align:center;
+
+    color:#0d47a1;
+
+    font-size:40px;
+
+    margin-bottom:30px;
+
+}
+
+
+
+.content-box p {
+
+    color:#444;
+
+    font-size:18px;
+
+    line-height:1.8;
+
+    text-align:center;
+
+}
+
+
+
+/* About page */
+
+.content-box::before {
+
+    content:"";
+
+    display:block;
+
+    width:80px;
+
+    height:5px;
+
+    background:#1565c0;
+
+    margin:0 auto 25px;
+
+    border-radius:10px;
+
+}
+
+
+
+
+
+/* Services */
+
+
+.service-card {
+
+
+    background:white;
+
+    padding:25px;
+
+    margin:20px 0;
+
+    border-radius:20px;
+
+
+    border-left:6px solid #1565c0;
+
+
+    box-shadow:
+
+    0 8px 20px rgba(0,0,0,0.12);
+
+
+    transition:0.3s;
+
+
+}
+
+
+
+.service-card:hover {
+
+
+    transform:translateY(-8px);
+
+
+    box-shadow:
+
+    0 15px 30px rgba(0,0,0,0.2);
+
+
+}
+
+
+
+.service-card h2 {
+
+
+    color:#0d47a1;
+
+    text-align:center;
+
+
+}
+
+
+
+.service-card p {
+
+
+    text-align:center;
+
+}
+
+
+
+
+
+/* Gallery */
+
+
+.gallery {
+
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(auto-fit,minmax(250px,1fr));
+
+
+    gap:25px;
+
+
+}
+
+
+
+.gallery img {
+
+
+    width:100%;
+
+    height:250px;
+
+    object-fit:cover;
+
+
+    border-radius:20px;
+
+
+    transition:0.4s;
+
+
+    box-shadow:
+
+    0 10px 20px rgba(0,0,0,0.2);
+
+
+}
+
+
+
+.gallery img:hover {
+
+
+    transform:scale(1.05);
+
+
+}
+
+
+
+
+
+/* FAQ */
+
+
+.content-box h3 {
+
+
+    background:#1565c0;
+
+    color:white;
+
+
+    padding:15px;
+
+
+    border-radius:15px;
+
+
+    margin-top:25px;
+
+
+}
+
+
+
+.content-box h3:hover {
+
+
+    background:#0d47a1;
+
+
+}
+
+
+
+.content-box h3 + p {
+
+
+    background:#f5f9ff;
+
+
+    padding:20px;
+
+    border-radius:15px;
+
+
+    text-align:left;
+
+
+}
+
+
+
+
+
+/* Animation */
+
+
+@keyframes fadeIn {
+
+
+    from {
+
+
+        opacity:0;
+
+        transform:translateY(30px);
+
+
+    }
+
+
+    to {
+
+
+        opacity:1;
+
+        transform:translateY(0);
+
+
+    }
+
+
+}
+
+
+
+
+/* Mobile responsive */
+
+
+@media(max-width:768px){
+
+
+    .content-box {
+
+
+        width:90%;
+
+        padding:25px;
+
+
+    }
+
+
+
+    .content-box h1 {
+
+        font-size:30px;
+
+    }
+
+
+
+}
+
+
+/* Contact Page */
+
+
+.contact-intro {
+
+    font-size:18px;
+
+    margin-bottom:30px;
+
+}
+
+
+
+.contact-cards {
+
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+
+
+    gap:20px;
+
+
+    margin-bottom:40px;
+
+
+}
+
+
+
+.contact-card {
+
+
+    background:white;
+
+
+    padding:25px;
+
+
+    text-align:center;
+
+
+    border-radius:20px;
+
+
+    box-shadow:
+    0 8px 20px rgba(0,0,0,0.15);
+
+
+    transition:0.3s;
+
+
+}
+
+
+
+.contact-card:hover {
+
+
+    transform:translateY(-8px);
+
+
+}
+
+
+
+.contact-card h2 {
+
+
+    color:#1565c0;
+
+
+}
+
+
+
+.contact-form {
+
+
+    background:#f5f9ff;
+
+
+    padding:30px;
+
+
+    border-radius:25px;
+
+
+    box-shadow:
+    0 8px 20px rgba(0,0,0,0.12);
+
+
+}
+
+
+
+.contact-form h2 {
+
+
+    text-align:center;
+
+    color:#0d47a1;
+
+    margin-bottom:25px;
+
+
+}
+
+
+
+.contact-form input,
+
+
+.contact-form textarea {
+
+
+    width:100%;
+
+
+    padding:15px;
+
+
+    margin-bottom:15px;
+
+
+    border-radius:15px;
+
+
+    border:1px solid #ccc;
+
+
+    font-size:16px;
+
+
+    outline:none;
+
+
+}
+
+
+
+.contact-form input:focus,
+
+
+.contact-form textarea:focus {
+
+
+    border-color:#1565c0;
+
+
+    box-shadow:
+    0 0 8px rgba(21,101,192,0.3);
+
+
+}
+
+
+
+.contact-form button {
+
+
+    width:100%;
+
+
+    padding:15px;
+
+
+    border:none;
+
+
+    border-radius:25px;
+
+
+    background:
+    linear-gradient(
+        90deg,
+        #0d47a1,
+        #1976d2
+    );
+
+
+    color:white;
+
+
+    font-size:18px;
+
+
+    cursor:pointer;
+
+
+    transition:0.3s;
+
+
+}
+
+
+
+.contact-form button:hover {
+
+
+    transform:scale(1.03);
+
+
+}
+
+.static-page {
+
+    min-height:100vh;
+
+    background:#f4f9ff;
+
+}
+
+
+
+.about-hero {
+
+    height:420px;
+
+    background:
+    linear-gradient(
+        rgba(0,119,255,0.75),
+        rgba(0,198,255,0.75)
+    ),
+    url("https://images.unsplash.com/photo-1519167758481-83f550bb49b3");
+
+    background-size:cover;
+
+    background-position:center;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    text-align:center;
+
+    color:white;
+
+}
+
+
+
+.hero-content h1 {
+
+    font-size:45px;
+
+    margin-bottom:20px;
+
+}
+
+
+
+.hero-content p {
+
+    font-size:20px;
+
+    max-width:700px;
+
+}
+
+
+
+.hero-content button {
+
+    margin-top:25px;
+
+    padding:14px 35px;
+
+    border:none;
+
+    border-radius:30px;
+
+    background:white;
+
+    color:#0077ff;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+
+.hero-content button:hover {
+
+    transform:scale(1.05);
+
+}
+
+
+
+
+.content-box {
+
+    width:85%;
+
+    margin:40px auto;
+
+    text-align:center;
+
+}
+
+
+
+.content-box h1 {
+
+    color:#0077ff;
+
+    font-size:36px;
+
+}
+
+
+
+.content-box p {
+
+    font-size:18px;
+
+    line-height:1.7;
+
+    color:#555;
+
+}
+
+
+
+
+
+.about-cards {
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:25px;
+
+    margin-top:40px;
+
+    flex-wrap:wrap;
+
+}
+
+
+
+
+.about-card {
+
+    background:white;
+
+    width:280px;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,0.1);
+
+    transition:.3s;
+
+}
+
+
+
+.about-card:hover {
+
+    transform:translateY(-10px);
+
+}
+
+
+
+.icon {
+
+    font-size:45px;
+
+}
+
+
+
+.about-card h2 {
+
+    color:#0077ff;
+
+}
+
+
+
+
+.mission-box {
+
+    margin-top:50px;
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,0.1);
+
+}
+
+
+
+.mission-box h2 {
+
+    color:#0077ff;
+
+}
+
+.services-hero {
+
+    height:350px;
+
+    background:
+    linear-gradient(
+        rgba(0,119,255,0.8),
+        rgba(0,198,255,0.8)
+    ),
+    url("https://images.unsplash.com/photo-1519167758481-83f550bb49b3");
+
+    background-size:cover;
+
+    background-position:center;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-align:center;
+
+    color:white;
+
+}
+
+
+
+.services-hero-content h1 {
+
+    font-size:45px;
+
+    margin-bottom:15px;
+
+}
+
+
+
+.services-hero-content p {
+
+    font-size:20px;
+
+    max-width:700px;
+
+}
+
+
+
+
+
+.services-container {
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:30px;
+
+    margin-top:40px;
+
+    flex-wrap:wrap;
+
+}
+
+
+
+
+
+.service-card {
+
+    background:white;
+
+    width:300px;
+
+    padding:35px 25px;
+
+    border-radius:25px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,0.12);
+
+    transition:0.3s;
+
+}
+
+
+
+.service-card:hover {
+
+    transform:translateY(-12px);
+
+}
+
+
+
+.service-icon {
+
+    font-size:55px;
+
+}
+
+
+
+.service-card h2 {
+
+    color:#0077ff;
+
+}
+
+
+
+.service-card p {
+
+    color:#555;
+
+    line-height:1.6;
+
+}
+
+
+
+.service-card button {
+
+    margin-top:20px;
+
+    padding:12px 25px;
+
+    border:none;
+
+    border-radius:25px;
+
+    background:#0077ff;
+
+    color:white;
+
+    cursor:pointer;
+
+}
+
+
+
+.service-card button:hover {
+
+    background:#005fcc;
+
+}
+
+
+
+
+
+.service-highlight {
+
+    margin-top:50px;
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:25px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,0.1);
+
+}
+
+
+
+.service-highlight h2 {
+
+    color:#0077ff;
+
+}
+
+
+
+.highlight-items {
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:25px;
+
+    flex-wrap:wrap;
+
+    margin-top:20px;
+
+}
+
+
+
+.highlight-items div {
+
+    background:#eaf5ff;
+
+    padding:15px 25px;
+
+    border-radius:30px;
+
+    font-weight:bold;
+
+}
+
+.gallery-hero {
+
+    height:350px;
+
+    background:
+    linear-gradient(
+        rgba(0,119,255,0.75),
+        rgba(0,198,255,0.75)
+    ),
+    url("https://images.unsplash.com/photo-1519167758481-83f550bb49b3");
+
+    background-size:cover;
+
+    background-position:center;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    text-align:center;
+
+    color:white;
+
+}
+
+
+
+.gallery-hero h1 {
+
+    font-size:45px;
+
+}
+
+
+
+.gallery-hero p {
+
+    font-size:20px;
+
+}
+
+
+
+
+
+.gallery {
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(auto-fit,minmax(280px,1fr));
+
+    gap:25px;
+
+    margin-top:40px;
+
+}
+
+
+
+.gallery-card {
+
+    position:relative;
+
+    overflow:hidden;
+
+    border-radius:20px;
+
+    height:250px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
+
+}
+
+
+
+.gallery-card img {
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    transition:0.5s;
+
+}
+
+
+
+.gallery-card:hover img {
+
+    transform:scale(1.1);
+
+}
+
+
+
+
+
+.gallery-overlay {
+
+    position:absolute;
+
+    bottom:0;
+
+    width:100%;
+
+    padding:20px;
+
+    background:
+
+    linear-gradient(
+        transparent,
+        rgba(0,0,0,0.8)
+    );
+
+    color:white;
+
+}
+
+
+
+.gallery-overlay h2 {
+
+    margin:0;
+
+    font-size:22px;
+
+}
+
+/* Terms Page */
+
+
+.terms-intro {
+
+    font-size:18px;
+
+    text-align:center;
+
+    margin-bottom:35px;
+
+}
+
+
+
+.terms-card {
+
+
+    background:white;
+
+
+    padding:25px;
+
+
+    margin:20px 0;
+
+
+    border-radius:20px;
+
+
+    border-left:6px solid #1565c0;
+
+
+    box-shadow:
+
+    0 8px 20px rgba(0,0,0,0.12);
+
+
+    transition:0.3s;
+
+
+}
+
+
+
+.terms-card:hover {
+
+
+    transform:translateX(10px);
+
+
+}
+
+
+
+.terms-card h2 {
+
+
+    color:#0d47a1;
+
+
+}
+
+
+
+.terms-card p {
+
+
+    text-align:left;
+
+
+}
+
+
+
+
+
+/* Footer */
+
+
+.site-footer {
+
+
+    margin-top:50px;
+
+
+    background:
+
+    linear-gradient(
+        90deg,
+        #0d47a1,
+        #1976d2
+    );
+
+
+    color:white;
+
+
+    padding:35px;
+
+
+    text-align:center;
+
+
+}
+
+
+
+.site-footer h2 {
+
+
+    font-size:28px;
+
+
+}
+
+
+
+.site-footer p {
+
+
+    color:white;
+
+
+}
+
+
+
+.footer-links {
+
+
+    display:flex;
+
+
+    justify-content:center;
+
+
+    gap:25px;
+
+
+    flex-wrap:wrap;
+
+
+    margin:20px 0;
+
+
+}
+
+
+
+.footer-links span {
+
+
+    cursor:pointer;
+
+
+    padding:8px 18px;
+
+
+    border-radius:20px;
+
+
+    background:rgba(255,255,255,0.15);
+
+
+    transition:0.3s;
+
+
+}
+
+
+
+.footer-links span:hover {
+
+
+    background:white;
+
+
+    color:#1565c0;
+
+
+}
+
+
+
+.copyright {
+
+
+    margin-top:20px;
+
+
+    font-size:14px;
+
+
+}
+
+
+/* Profile Page */
+
+
+.profile-header {
+
+    text-align:center;
+
+}
+
+
+
+.profile-icon {
+
+
+    width:100px;
+
+    height:100px;
+
+    margin:auto;
+
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+
+    font-size:50px;
+
+
+    background:#e3f2fd;
+
+
+    border-radius:50%;
+
+
+    box-shadow:
+    0 8px 20px rgba(0,0,0,0.15);
+
+
+}
+
+
+
+.profile-card {
+
+
+    margin-top:35px;
+
+
+    display:grid;
+
+
+    gap:20px;
+
+
+}
+
+
+
+.profile-detail {
+
+
+    background:white;
+
+
+    padding:20px;
+
+
+    border-radius:20px;
+
+
+    border-left:6px solid #1565c0;
+
+
+    box-shadow:
+    0 8px 20px rgba(0,0,0,0.12);
+
+
+    transition:.3s;
+
+
+}
+
+
+
+.profile-detail:hover {
+
+
+    transform:translateY(-5px);
+
+
+}
+
+
+
+.profile-detail h3 {
+
+
+    color:#0d47a1;
+
+
+}
+
+
+
+.profile-detail p {
+
+
+    text-align:left;
+
+
+    font-size:18px;
+
+
+}
+
+
+
+.profile-btn {
+
+
+    display:block;
+
+
+    margin:35px auto 0;
+
+
+    padding:15px 40px;
+
+
+    border:none;
+
+
+    border-radius:30px;
+
+
+    background:
+
+    linear-gradient(
+        90deg,
+        #0d47a1,
+        #1976d2
+    );
+
+
+    color:white;
+
+
+    font-size:18px;
+
+
+    cursor:pointer;
+
+
+    transition:.3s;
+
+
+}
+
+
+
+.profile-btn:hover {
+
+
+    transform:scale(1.05);
+
+
+}
