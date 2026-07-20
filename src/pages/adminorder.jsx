@@ -51,35 +51,41 @@ function AdminOrders() {
     const updateStatus = async(id,status)=>{
 
 
-        try{
+    try{
 
 
-            await axios.put(
+        await axios.put(
 
-                `http://localhost:8080/api/orders/${id}?status=${status}`
+            `http://localhost:8080/api/orders/${id}`,
 
-            );
+            {
+                status: status
+            }
 
-
-            alert("Order Status Updated");
-
-
-            getOrders();
+        );
 
 
-
-        }catch(error){
-
-            console.log(error);
-
-            alert("Update Failed");
-
-        }
+        alert("Order Status Updated");
 
 
-    };
+        getOrders();
 
 
+
+    }
+    catch(error){
+
+
+        console.log(error.response?.data || error);
+
+
+        alert("Update Failed");
+
+
+    }
+
+
+};
 
 
 
