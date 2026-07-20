@@ -1,0 +1,367 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+
+body{
+    background:#f4f6f9;
+}
+
+
+/* Main Container */
+
+.item-container{
+
+    padding:40px;
+
+}
+
+
+
+/* Add / Update Form Card */
+
+.item-card{
+
+    background:white;
+
+    width:500px;
+
+    margin:0 auto 40px auto;
+
+    padding:30px;
+
+    border-radius:12px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,0.15);
+
+}
+
+
+
+.item-card h2{
+
+    text-align:center;
+
+    margin-bottom:25px;
+
+    color:#333;
+
+}
+
+
+
+
+.item-card label{
+
+    display:block;
+
+    margin-top:15px;
+
+    margin-bottom:7px;
+
+    font-weight:bold;
+
+    color:#444;
+
+}
+
+
+
+
+.item-card input,
+.item-card textarea,
+.item-card select{
+
+    width:100%;
+
+    padding:12px;
+
+    border:1px solid #ccc;
+
+    border-radius:6px;
+
+    font-size:15px;
+
+}
+
+
+
+.item-card textarea{
+
+    height:100px;
+
+    resize:none;
+
+}
+
+
+
+
+
+.checkbox{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin-top:20px;
+
+}
+
+
+
+.checkbox input{
+
+    width:18px;
+
+    height:18px;
+
+}
+
+
+
+
+
+/* Main Buttons */
+
+.item-card button{
+
+    width:100%;
+
+    margin-top:25px;
+
+    padding:13px;
+
+    border:none;
+
+    border-radius:6px;
+
+    background:#0d6efd;
+
+    color:white;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+}
+
+
+
+.item-card button:hover{
+
+    background:#0b5ed7;
+
+}
+
+
+
+
+/* Cancel Button */
+
+.cancel-btn{
+
+    background:#6c757d !important;
+
+}
+
+
+
+.cancel-btn:hover{
+
+    background:#5c636a !important;
+
+}
+
+
+
+
+
+/* Item Table Section */
+
+.table-card{
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:12px;
+
+    box-shadow:0 5px 15px rgba(0,0,0,0.15);
+
+    overflow-x:auto;
+
+}
+
+
+
+.table-card h2{
+
+    margin-bottom:20px;
+
+    color:#333;
+
+}
+
+
+
+
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+
+
+
+table th{
+
+    background:#0d6efd;
+
+    color:white;
+
+    padding:14px;
+
+    text-align:center;
+
+}
+
+
+
+
+table td{
+
+    padding:12px;
+
+    text-align:center;
+
+    border-bottom:1px solid #ddd;
+
+}
+
+
+
+
+table tr:hover{
+
+    background:#f8f9fa;
+
+}
+
+
+
+
+
+/* Item Image */
+
+.item-image{
+
+    width:70px;
+
+    height:70px;
+
+    object-fit:cover;
+
+    border-radius:8px;
+
+}
+
+
+
+
+/* Action Buttons */
+
+.edit-btn{
+
+    background:#198754;
+
+    color:white;
+
+    border:none;
+
+    padding:8px 15px;
+
+    border-radius:5px;
+
+    margin-right:8px;
+
+    cursor:pointer;
+
+}
+
+
+
+.edit-btn:hover{
+
+    background:#157347;
+
+}
+
+
+
+
+.delete-btn{
+
+    background:#dc3545;
+
+    color:white;
+
+    border:none;
+
+    padding:8px 15px;
+
+    border-radius:5px;
+
+    cursor:pointer;
+
+}
+
+
+
+.delete-btn:hover{
+
+    background:#bb2d3b;
+
+}
+
+
+
+
+
+/* Responsive Design */
+
+@media(max-width:700px){
+
+
+    .item-container{
+
+        padding:20px;
+
+    }
+
+
+
+    .item-card{
+
+        width:100%;
+
+    }
+
+
+    table{
+
+        font-size:14px;
+
+    }
+
+
+}

@@ -1,0 +1,265 @@
+.admin-container{
+
+    min-height:100vh;
+
+    background:linear-gradient(
+        135deg,
+        #667eea,
+        #764ba2
+    );
+
+    padding:40px;
+
+    color:white;
+
+}
+
+
+
+
+.admin-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:rgba(255,255,255,0.15);
+
+    padding:30px;
+
+    border-radius:20px;
+
+    backdrop-filter:blur(10px);
+
+}
+
+
+
+.admin-header h1{
+
+    font-size:38px;
+
+}
+
+
+
+.admin-header p{
+
+    margin-top:10px;
+
+    font-size:18px;
+
+}
+
+
+
+
+.header-buttons{
+
+    display:flex;
+
+    gap:15px;
+
+}
+
+
+
+.header-buttons button{
+
+    padding:12px 25px;
+
+    border:none;
+
+    border-radius:25px;
+
+    cursor:pointer;
+
+    font-size:15px;
+
+}
+
+
+
+
+.customer-btn{
+
+    background:#ffffff;
+
+    color:#667eea;
+
+}
+
+
+
+.logout-btn{
+
+    background:#ff4757;
+
+    color:white;
+
+}
+
+
+
+
+
+.dashboard-content{
+
+    margin-top:50px;
+
+}
+
+
+
+.dashboard-content h2{
+
+    text-align:center;
+
+    font-size:32px;
+
+    margin-bottom:35px;
+
+}
+
+
+
+
+
+.cards{
+
+    display:grid;
+
+    grid-template-columns:repeat(
+        auto-fit,
+        minmax(250px,1fr)
+    );
+
+    gap:30px;
+
+}
+
+
+
+
+
+.card{
+
+    background:white;
+
+    color:#333;
+
+    padding:30px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    height:330px;   /* added - makes all cards equal size */
+
+    display:flex;   /* added */
+
+    flex-direction:column;  /* added */
+
+    justify-content:space-between; /* added */
+
+    box-shadow:
+    0 15px 30px rgba(0,0,0,0.2);
+
+    transition:0.3s;
+
+}
+
+
+
+.card:hover{
+
+    transform:translateY(-10px);
+
+}
+
+
+
+
+.icon{
+
+    font-size:50px;
+
+    margin-bottom:20px;
+
+}
+
+
+
+
+
+.card h3{
+
+    font-size:24px;
+
+    margin-bottom:15px;
+
+}
+
+
+
+
+.card p{
+
+    color:#666;
+
+    min-height:50px;
+
+}
+
+
+
+
+.card button{
+
+    margin-top:20px;
+
+    padding:12px 25px;
+
+    border:none;
+
+    border-radius:25px;
+
+    background:#667eea;
+
+    color:white;
+
+    cursor:pointer;
+
+}
+
+
+
+
+.card button:hover{
+
+    background:#764ba2;
+
+}
+
+
+
+
+
+
+@media(max-width:700px){
+
+
+    .admin-header{
+
+        flex-direction:column;
+
+        gap:20px;
+
+        text-align:center;
+
+    }
+
+
+}

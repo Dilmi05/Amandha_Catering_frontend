@@ -1,0 +1,236 @@
+.users-container {
+
+    min-height: 100vh;
+
+    background: linear-gradient(
+        135deg,
+        #667eea,
+        #764ba2
+    );
+
+    padding: 40px;
+
+    color: white;
+
+}
+
+
+
+
+.users-container h1 {
+
+    text-align: center;
+
+    font-size: 35px;
+
+    margin-bottom: 40px;
+
+}
+
+
+
+
+
+table {
+
+    width: 100%;
+
+    background: white;
+
+    color: #333;
+
+    border-collapse: collapse;
+
+    border-radius: 15px;
+
+    overflow: hidden;
+
+    box-shadow:
+    0 15px 30px rgba(0,0,0,0.2);
+
+}
+
+
+
+
+
+thead {
+
+    background: #667eea;
+
+    color: white;
+
+}
+
+
+
+
+
+th {
+
+    padding: 18px;
+
+    font-size: 16px;
+
+}
+
+
+
+
+
+td {
+
+    padding: 15px;
+
+    text-align: center;
+
+    border-bottom: 1px solid #ddd;
+
+}
+
+
+
+
+
+tbody tr:hover {
+
+    background: #f5f5f5;
+
+}
+
+
+
+
+
+.admin-role {
+
+    background: #667eea;
+
+    color:white;
+
+    padding:8px 18px;
+
+    border-radius:20px;
+
+    font-size:14px;
+
+}
+
+
+
+
+
+.customer-role {
+
+    background:#2ed573;
+
+    color:white;
+
+    padding:8px 18px;
+
+    border-radius:20px;
+
+    font-size:14px;
+
+}
+
+
+
+
+
+.delete-btn {
+
+    background:#ff4757;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 22px;
+
+    border-radius:25px;
+
+    cursor:pointer;
+
+    font-size:14px;
+
+}
+
+
+
+
+
+.delete-btn:hover {
+
+    background:#e84118;
+
+}
+
+
+
+
+
+tbody tr {
+
+    transition:0.3s;
+
+}
+
+
+
+
+tbody tr:hover {
+
+    transform:scale(1.01);
+
+}
+
+
+
+
+
+@media(max-width:900px){
+
+
+    .users-container{
+
+        padding:20px;
+
+    }
+
+
+    table{
+
+        font-size:14px;
+
+    }
+
+
+    th,td{
+
+        padding:10px;
+
+    }
+
+
+}
+
+
+
+
+
+@media(max-width:600px){
+
+
+    table{
+
+        display:block;
+
+        overflow-x:auto;
+
+        white-space:nowrap;
+
+    }
+
+
+}

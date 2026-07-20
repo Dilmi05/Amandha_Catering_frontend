@@ -3,143 +3,142 @@ import { useNavigate, Link } from "react-router-dom";
 import "./login.css";
 import axios from "axios";
 
+function Login() {
 
-function Login(){
+    const navigate = useNavigate();
 
-const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
-const [email,setEmail]=useState("");
-const [password,setPassword]=useState("");
-const [error,setError]=useState("");
+    async function handleLogin(e) {
 
+        e.preventDefault();
 
-async function handleLogin(e) {
+        setError("");
 
-    e.preventDefault();
+        try {
 
-    try {
+            const response = await axios.post(
+                "http://localhost:8080/catering-backend/login",
 
-        const response = await axios.post(
-    "http://localhost:8080/catering-backend/login",
+                new URLSearchParams({
+                    email,
+                    password
+                }),
 
-    new URLSearchParams({
-        email,
-        password
-    }),
+                {
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    }
+                }
+            );
 
-    {
-        headers:{
-            "Content-Type":"application/x-www-form-urlencoded"
+            // Check login result
+            if (response.data.status === "success") {
+
+                if (response.data.role === "admin") {
+
+                    navigate("/admin");
+
+                } else if (response.data.role === "customer") {
+
+                    navigate("/home");
+
+                } else {
+
+                    setError("Unknown user role");
+
+                }
+
+            } else {
+
+                setError("Invalid Email or Password");
+
+            }
+
+        } catch (error) {
+
+            console.log(error);
+            setError("Server Error");
+
         }
-    }
-);
-        if (response.data === "success") {
-
-            navigate("/home");
-
-        } else {
-
-            setError("Invalid Email or Password");
-
-        }
-
-    } catch (error) {
-
-        console.log(error);
-
-        setError("Server Error");
 
     }
-}
 
+    return (
 
-return(
+        <div className="login-container">
 
-<div className="login-container">
+            <div className="login-card">
 
-<div className="login-card">
+                <h2>Login</h2>
 
-<h2>Login</h2>
+                <p>Welcome Back</p>
 
-<p>Welcome Back</p>
+                <form onSubmit={handleLogin}>
 
+                    <div className="input-group">
 
-<form onSubmit={handleLogin}>
+                        <label>Email</label>
 
+                        <input
+                            type="email"
+                            placeholder="Enter email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
 
-<div className="input-group">
+                    </div>
 
-<label>Email</label>
+                    <div className="input-group">
 
-<input
-type="email"
-placeholder="Enter email"
-value={email}
-onChange={(e)=>setEmail(e.target.value)}
-/>
+                        <label>Password</label>
 
-</div>
+                        <input
+                            type="password"
+                            placeholder="Enter password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
 
+                    </div>
 
+                    {error && (
+                        <p className="error">
+                            {error}
+                        </p>
+                    )}
 
-<div className="input-group">
+                    <button type="submit" className="login-btn">
+                        Login
+                    </button>
 
-<label>Password</label>
+                </form>
 
-<input
-type="password"
-placeholder="Enter password"
-value={password}
-onChange={(e)=>setPassword(e.target.value)}
-/>
+                <div className="footer-links">
 
-</div>
+                    <Link to="/forgot-password">
+                        Forgot Password?
+                    </Link>
 
+                    <p>
+                        Don't have an account?
+                        <Link to="/register">
+                            {" "}Register
+                        </Link>
+                    </p>
 
+                </div>
 
-{
-error && 
-<p className="error">
-{error}
-</p>
-}
+            </div>
 
+        </div>
 
-
-<button className="login-btn">
-Login
-</button>
-
-
-</form>
-
-
-
-<div className="footer-links">
-
-<Link to="/forgot-password">
-Forgot Password?
-</Link>
-
-
-<p>
-Don't have an account?
-<Link to="/register">
- Register
-</Link>
-</p>
-
-
-</div>
-
-
-</div>
-
-</div>
-
-)
+    );
 
 }
-
 
 export default Login;
