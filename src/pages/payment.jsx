@@ -13,24 +13,37 @@ function Payment() {
 
     const total = cart.reduce(
         (sum, item) =>
-            sum + item.price * item.quantity,
+            sum + Number(item.price) * Number(item.quantity),
         0
     );
 
 
 
+    const loggedUser =
+        JSON.parse(localStorage.getItem("user")) || {};
+
+
+
     const [paymentMethod, setPaymentMethod] = useState("");
+
+    const [loading, setLoading] = useState(false);
 
 
 
     const [customer, setCustomer] = useState({
 
-        customerId: 1,
-        name: "",
+        customerId: loggedUser.userId || null,
+
+        name: loggedUser.name || "",
+
         phone: "",
-        email: "",
+
+        email: loggedUser.email || "",
+
         address: "",
+
         eventDate: "",
+
         eventTime: ""
 
     });
@@ -41,10 +54,10 @@ function Payment() {
 
     const [card, setCard] = useState({
 
-        holder: "",
-        number: "",
-        expiry: "",
-        cvv: ""
+        holder:"",
+        number:"",
+        expiry:"",
+        cvv:""
 
     });
 
@@ -59,7 +72,7 @@ function Payment() {
 
             ...customer,
 
-            [e.target.name]:e.target.value
+            [e.target.name]: e.target.value
 
         });
 
@@ -70,23 +83,19 @@ function Payment() {
 
 
 
-
-
-    const handleCardChange=(e)=>{
+    const handleCardChange = (e)=>{
 
 
         setCard({
 
             ...card,
 
-            [e.target.name]:e.target.value
+            [e.target.name]: e.target.value
 
         });
 
 
     };
-
-
 
 
 
@@ -97,10 +106,67 @@ function Payment() {
     const createOrder = async()=>{
 
 
+        if(loading)
+            return;
+
+
+
+        if(cart.length === 0){
+
+            alert("Cart is empty");
+            return;
+
+        }
+
+
+
+        if(!customer.customerId){
+
+            alert("Please login again");
+            return;
+
+        }
+
+
+
+        if(customer.address.trim()===""){
+
+            alert("Enter delivery address");
+            return;
+
+        }
+
+
+
+        if(customer.eventDate===""){
+
+            alert("Select event date");
+            return;
+
+        }
+
+
+
+        if(paymentMethod===""){
+
+            alert("Select payment method");
+            return;
+
+        }
+
+
+
+
+
         try{
 
 
-            // 1. Save order
+            setLoading(true);
+
+
+
+
+            // CREATE ORDER
 
             const orderResponse = await axios.post(
 
@@ -108,11 +174,13 @@ function Payment() {
 
                 {
 
-                    customerId: customer.customerId,
+                    customerId:Number(customer.customerId),
 
-                    eventDate: customer.eventDate,
+                    eventDate:customer.eventDate,
 
-                    totalAmount: total
+                    totalAmount:Number(total),
+
+                    status:"pending"
 
                 }
 
@@ -120,15 +188,34 @@ function Payment() {
 
 
 
-            const orderId = orderResponse.data.orderId;
+
+            console.log(
+                "Order Response:",
+                orderResponse.data
+            );
+
+
+
+            const orderId =
+                orderResponse.data.orderId;
+
+
+
+            if(!orderId){
+
+                throw new Error(
+                    "Order ID not received"
+                );
+
+            }
 
 
 
 
 
-            // 2. Save ordered items
+            // SAVE ORDER DETAILS
 
-            for(let item of cart){
+            for(const item of cart){
 
 
                 await axios.post(
@@ -138,16 +225,16 @@ function Payment() {
                     {
 
 
-                        orderId: orderId,
+                        orderId:orderId,
 
 
-                        itemId: item.item_id,
+                        itemId:Number(item.item_id),
 
 
-                        quantity: item.quantity,
+                        quantity:Number(item.quantity),
 
 
-                        price: item.price
+                        price:Number(item.price)
 
 
                     }
@@ -161,7 +248,9 @@ function Payment() {
 
 
 
-            alert("Order placed successfully!");
+            alert(
+                "Order placed successfully!"
+            );
 
 
 
@@ -169,50 +258,40 @@ function Payment() {
 
 
 
-        }catch(error){
+            window.location.href="/home";
 
 
-            console.log(error);
+
+        }
+        catch(error){
 
 
-            alert("Order Failed");
+            console.error(error);
+
+
+            console.log(
+                error.response?.data
+            );
+
+
+            alert(
+                "Order Failed"
+            );
+
+
+        }
+        finally{
+
+
+            setLoading(false);
 
 
         }
 
 
-    };
-
-
-
-
-
-
-
-
-
-    const placeOrder = ()=>{
-
-
-        createOrder();
-
 
     };
 
-
-
-
-
-
-
-
-    const payNow = ()=>{
-
-
-        createOrder();
-
-
-    };
 
 
 
@@ -221,50 +300,72 @@ function Payment() {
 
     return (
 
-
         <div className="payment-container">
 
 
             <div className="payment-card">
 
 
-                <h1>Catering Payment</h1>
+                <h1>
+                    Catering Payment
+                </h1>
 
 
 
-                <h2>Customer Information</h2>
 
+                <h2>
+                    Customer Information
+                </h2>
 
 
 
 
                 <input
-                    type="text"
+
                     name="name"
+
                     placeholder="Full Name"
+
                     value={customer.name}
+
                     onChange={handleCustomerChange}
+
                 />
 
 
 
+
                 <input
-                    type="text"
+
                     name="phone"
+
                     placeholder="Phone Number"
+
                     value={customer.phone}
+
                     onChange={handleCustomerChange}
+
                 />
+
+
 
 
 
                 <input
+
                     type="email"
+
                     name="email"
-                    placeholder="Email Address"
+
+                    placeholder="Email"
+
                     value={customer.email}
+
                     onChange={handleCustomerChange}
+
                 />
+
+
 
 
 
@@ -273,8 +374,6 @@ function Payment() {
                     name="address"
 
                     placeholder="Delivery Address"
-
-                    rows="4"
 
                     value={customer.address}
 
@@ -286,7 +385,13 @@ function Payment() {
 
 
 
-                <label>Event Date</label>
+
+
+                <label>
+                    Event Date
+                </label>
+
+
 
 
                 <input
@@ -305,7 +410,13 @@ function Payment() {
 
 
 
-                <label>Event Time</label>
+
+
+                <label>
+                    Event Time
+                </label>
+
+
 
 
                 <input
@@ -325,18 +436,16 @@ function Payment() {
 
 
 
-                <div className="summary">
+
+                <h2>
+                    Order Total
+                </h2>
 
 
-                    <h2>Order Summary</h2>
 
-
-                    <h3>
-                        Total Amount : Rs. {total}
-                    </h3>
-
-
-                </div>
+                <h3>
+                    Rs. {total}
+                </h3>
 
 
 
@@ -344,12 +453,15 @@ function Payment() {
 
 
 
-                <h2>Select Payment Method</h2>
+                <h2>
+                    Payment Method
+                </h2>
 
 
 
 
-                <div className="payment-option">
+
+                <label className="radio-option">
 
 
                     <input
@@ -360,25 +472,24 @@ function Payment() {
 
                         checked={paymentMethod==="Cash"}
 
-                        onChange={(e)=>
+                        onChange={
+                            (e)=>
                             setPaymentMethod(e.target.value)
                         }
 
                     />
 
+                    Cash On Delivery
 
-                    Cash on Delivery
 
-
-                </div>
-
+                </label>
 
 
 
 
 
 
-                <div className="payment-option">
+                <label className="radio-option">
 
 
                     <input
@@ -389,17 +500,17 @@ function Payment() {
 
                         checked={paymentMethod==="Online"}
 
-                        onChange={(e)=>
+                        onChange={
+                            (e)=>
                             setPaymentMethod(e.target.value)
                         }
 
                     />
 
-
                     Online Payment
 
 
-                </div>
+                </label>
 
 
 
@@ -408,72 +519,31 @@ function Payment() {
 
 
 
-                {paymentMethod==="Cash" && (
+                {
+                paymentMethod==="Online" &&
+
+                <div className="card-box">
 
 
-                    <div className="cash-box">
-
-
-                        <h2>Delivery Information</h2>
-
-
-                        <p>Name : {customer.name}</p>
-
-                        <p>Phone : {customer.phone}</p>
-
-                        <p>Address : {customer.address}</p>
-
-                        <p>Date : {customer.eventDate}</p>
-
-
-                        <h3>
-                            Total : Rs. {total}
-                        </h3>
+                    <h3>
+                        Card Details
+                    </h3>
 
 
 
-                        <button onClick={placeOrder}>
-
-                            Place Order
-
-                        </button>
-
-
-                    </div>
-
-
-                )}
-
-
-
-
-
-
-
-
-                {paymentMethod==="Online" && (
-
-
-                    <div className="online-box">
-
-
-                        <h2>Card Details</h2>
-
-
-
-                        <input
+                    <input
 
                         name="holder"
 
-                        placeholder="Card Holder Name"
+                        placeholder="Card Holder"
 
                         onChange={handleCardChange}
 
-                        />
+                    />
 
 
 
-                        <input
+                    <input
 
                         name="number"
 
@@ -481,12 +551,11 @@ function Payment() {
 
                         onChange={handleCardChange}
 
-                        />
+                    />
 
 
 
-
-                        <input
+                    <input
 
                         name="expiry"
 
@@ -494,11 +563,11 @@ function Payment() {
 
                         onChange={handleCardChange}
 
-                        />
+                    />
 
 
 
-                        <input
+                    <input
 
                         name="cvv"
 
@@ -508,28 +577,40 @@ function Payment() {
 
                         onChange={handleCardChange}
 
-                        />
+                    />
+
+
+                </div>
+
+                }
 
 
 
-                        <h3>
-                            Total : Rs. {total}
-                        </h3>
 
 
 
-                        <button onClick={payNow}>
 
-                            Pay Now
+                <button
 
-                        </button>
+                    onClick={createOrder}
+
+                    disabled={loading}
+
+                >
+
+
+                    {
+                        loading
+                        ?
+                        "Processing..."
+                        :
+                        "Place Order"
+                    }
 
 
 
-                    </div>
+                </button>
 
-
-                )}
 
 
 
@@ -538,7 +619,6 @@ function Payment() {
 
 
         </div>
-
 
     );
 
