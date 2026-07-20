@@ -26,33 +26,32 @@ function Payment() {
 
     const [paymentMethod, setPaymentMethod] = useState("");
 
-    const [loading, setLoading] = useState(false);
+    const [loading,setLoading] = useState(false);
 
 
 
-    const [customer, setCustomer] = useState({
+    const [customer,setCustomer] = useState({
 
-        customerId: loggedUser.userId || null,
+        customerId: Number(loggedUser.userId),
 
         name: loggedUser.name || "",
 
-        phone: "",
+        phone:"",
 
         email: loggedUser.email || "",
 
-        address: "",
+        address:"",
 
-        eventDate: "",
+        eventDate:"",
 
-        eventTime: ""
+        eventTime:""
 
     });
 
 
 
 
-
-    const [card, setCard] = useState({
+    const [card,setCard] = useState({
 
         holder:"",
         number:"",
@@ -65,17 +64,15 @@ function Payment() {
 
 
 
-    const handleCustomerChange = (e)=>{
-
+    const handleCustomerChange=(e)=>{
 
         setCustomer({
 
             ...customer,
 
-            [e.target.name]: e.target.value
+            [e.target.name]:e.target.value
 
         });
-
 
     };
 
@@ -83,17 +80,15 @@ function Payment() {
 
 
 
-    const handleCardChange = (e)=>{
-
+    const handleCardChange=(e)=>{
 
         setCard({
 
             ...card,
 
-            [e.target.name]: e.target.value
+            [e.target.name]:e.target.value
 
         });
-
 
     };
 
@@ -111,7 +106,7 @@ function Payment() {
 
 
 
-        if(cart.length === 0){
+        if(cart.length===0){
 
             alert("Cart is empty");
             return;
@@ -120,9 +115,10 @@ function Payment() {
 
 
 
-        if(!customer.customerId){
+        if(!loggedUser.userId){
 
-            alert("Please login again");
+            alert("User ID missing. Login again.");
+
             return;
 
         }
@@ -132,6 +128,7 @@ function Payment() {
         if(customer.address.trim()===""){
 
             alert("Enter delivery address");
+
             return;
 
         }
@@ -141,6 +138,7 @@ function Payment() {
         if(customer.eventDate===""){
 
             alert("Select event date");
+
             return;
 
         }
@@ -150,6 +148,7 @@ function Payment() {
         if(paymentMethod===""){
 
             alert("Select payment method");
+
             return;
 
         }
@@ -165,7 +164,6 @@ function Payment() {
 
 
 
-
             // CREATE ORDER
 
             const orderResponse = await axios.post(
@@ -174,7 +172,7 @@ function Payment() {
 
                 {
 
-                    customerId:Number(customer.customerId),
+                    customerId:Number(loggedUser.userId),
 
                     eventDate:customer.eventDate,
 
@@ -190,7 +188,7 @@ function Payment() {
 
 
             console.log(
-                "Order Response:",
+                "ORDER RESPONSE",
                 orderResponse.data
             );
 
@@ -204,7 +202,7 @@ function Payment() {
             if(!orderId){
 
                 throw new Error(
-                    "Order ID not received"
+                    "Order ID not returned"
                 );
 
             }
@@ -212,8 +210,7 @@ function Payment() {
 
 
 
-
-            // SAVE ORDER DETAILS
+            // ORDER DETAILS
 
             for(const item of cart){
 
@@ -224,18 +221,13 @@ function Payment() {
 
                     {
 
-
-                        orderId:orderId,
-
+                        orderId:Number(orderId),
 
                         itemId:Number(item.item_id),
 
-
                         quantity:Number(item.quantity),
 
-
                         price:Number(item.price)
-
 
                     }
 
@@ -248,14 +240,48 @@ function Payment() {
 
 
 
+            // PAYMENT
+
+            const paymentResponse = await axios.post(
+
+                "http://localhost:8080/api/payments",
+
+                {
+
+                    orderId:Number(orderId),
+
+                    amount:Number(total),
+
+                    method:paymentMethod,
+
+                    status:
+                    paymentMethod==="Online"
+                    ?
+                    "paid"
+                    :
+                    "pending"
+
+                }
+
+            );
+
+
+
+            console.log(
+                "PAYMENT RESPONSE",
+                paymentResponse.data
+            );
+
+
+
+
             alert(
-                "Order placed successfully!"
+                "Order placed successfully"
             );
 
 
 
             clearCart();
-
 
 
             window.location.href="/home";
@@ -285,7 +311,6 @@ function Payment() {
 
             setLoading(false);
 
-
         }
 
 
@@ -298,10 +323,10 @@ function Payment() {
 
 
 
+
     return (
 
         <div className="payment-container">
-
 
             <div className="payment-card">
 
@@ -309,7 +334,6 @@ function Payment() {
                 <h1>
                     Catering Payment
                 </h1>
-
 
 
 
@@ -322,28 +346,13 @@ function Payment() {
 
                 <input
 
-                    name="name"
+                name="name"
 
-                    placeholder="Full Name"
+                placeholder="Full Name"
 
-                    value={customer.name}
+                value={customer.name}
 
-                    onChange={handleCustomerChange}
-
-                />
-
-
-
-
-                <input
-
-                    name="phone"
-
-                    placeholder="Phone Number"
-
-                    value={customer.phone}
-
-                    onChange={handleCustomerChange}
+                onChange={handleCustomerChange}
 
                 />
 
@@ -353,15 +362,31 @@ function Payment() {
 
                 <input
 
-                    type="email"
+                name="phone"
 
-                    name="email"
+                placeholder="Phone Number"
 
-                    placeholder="Email"
+                value={customer.phone}
 
-                    value={customer.email}
+                onChange={handleCustomerChange}
 
-                    onChange={handleCustomerChange}
+                />
+
+
+
+
+
+                <input
+
+                type="email"
+
+                name="email"
+
+                placeholder="Email"
+
+                value={customer.email}
+
+                onChange={handleCustomerChange}
 
                 />
 
@@ -371,16 +396,15 @@ function Payment() {
 
                 <textarea
 
-                    name="address"
+                name="address"
 
-                    placeholder="Delivery Address"
+                placeholder="Delivery Address"
 
-                    value={customer.address}
+                value={customer.address}
 
-                    onChange={handleCustomerChange}
+                onChange={handleCustomerChange}
 
                 />
-
 
 
 
@@ -392,21 +416,17 @@ function Payment() {
                 </label>
 
 
-
-
                 <input
 
-                    type="date"
+                type="date"
 
-                    name="eventDate"
+                name="eventDate"
 
-                    value={customer.eventDate}
+                value={customer.eventDate}
 
-                    onChange={handleCustomerChange}
+                onChange={handleCustomerChange}
 
                 />
-
-
 
 
 
@@ -417,17 +437,15 @@ function Payment() {
                 </label>
 
 
-
-
                 <input
 
-                    type="time"
+                type="time"
 
-                    name="eventTime"
+                name="eventTime"
 
-                    value={customer.eventTime}
+                value={customer.eventTime}
 
-                    onChange={handleCustomerChange}
+                onChange={handleCustomerChange}
 
                 />
 
@@ -438,14 +456,8 @@ function Payment() {
 
 
                 <h2>
-                    Order Total
+                    Total : Rs. {total}
                 </h2>
-
-
-
-                <h3>
-                    Rs. {total}
-                </h3>
 
 
 
@@ -460,26 +472,24 @@ function Payment() {
 
 
 
-
                 <label className="radio-option">
 
 
-                    <input
+                <input
 
-                        type="radio"
+                type="radio"
 
-                        value="Cash"
+                value="Cash"
 
-                        checked={paymentMethod==="Cash"}
+                checked={paymentMethod==="Cash"}
 
-                        onChange={
-                            (e)=>
-                            setPaymentMethod(e.target.value)
-                        }
+                onChange={(e)=>
+                    setPaymentMethod(e.target.value)
+                }
 
-                    />
+                />
 
-                    Cash On Delivery
+                Cash On Delivery
 
 
                 </label>
@@ -492,27 +502,24 @@ function Payment() {
                 <label className="radio-option">
 
 
-                    <input
+                <input
 
-                        type="radio"
+                type="radio"
 
-                        value="Online"
+                value="Online"
 
-                        checked={paymentMethod==="Online"}
+                checked={paymentMethod==="Online"}
 
-                        onChange={
-                            (e)=>
-                            setPaymentMethod(e.target.value)
-                        }
+                onChange={(e)=>
+                    setPaymentMethod(e.target.value)
+                }
 
-                    />
+                />
 
-                    Online Payment
+                Online Payment
 
 
                 </label>
-
-
 
 
 
@@ -530,53 +537,32 @@ function Payment() {
                     </h3>
 
 
-
                     <input
-
-                        name="holder"
-
-                        placeholder="Card Holder"
-
-                        onChange={handleCardChange}
-
+                    name="holder"
+                    placeholder="Card Holder"
+                    onChange={handleCardChange}
                     />
 
 
-
                     <input
-
-                        name="number"
-
-                        placeholder="Card Number"
-
-                        onChange={handleCardChange}
-
+                    name="number"
+                    placeholder="Card Number"
+                    onChange={handleCardChange}
                     />
 
 
-
                     <input
-
-                        name="expiry"
-
-                        placeholder="MM/YY"
-
-                        onChange={handleCardChange}
-
+                    name="expiry"
+                    placeholder="MM/YY"
+                    onChange={handleCardChange}
                     />
 
 
-
                     <input
-
-                        name="cvv"
-
-                        placeholder="CVV"
-
-                        type="password"
-
-                        onChange={handleCardChange}
-
+                    name="cvv"
+                    placeholder="CVV"
+                    type="password"
+                    onChange={handleCardChange}
                     />
 
 
@@ -588,29 +574,24 @@ function Payment() {
 
 
 
-
-
                 <button
 
-                    onClick={createOrder}
+                onClick={createOrder}
 
-                    disabled={loading}
+                disabled={loading}
 
                 >
 
-
-                    {
-                        loading
-                        ?
-                        "Processing..."
-                        :
-                        "Place Order"
-                    }
-
+                {
+                    loading
+                    ?
+                    "Processing..."
+                    :
+                    "Place Order"
+                }
 
 
                 </button>
-
 
 
 

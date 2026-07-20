@@ -6,21 +6,30 @@ import "./login.css";
 
 function Login() {
 
+
     const navigate = useNavigate();
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
+
+    const [email,setEmail] = useState("");
+
+    const [password,setPassword] = useState("");
+
+    const [error,setError] = useState("");
 
 
-    const handleLogin = async (e) => {
+
+
+    const handleLogin = async(e)=>{
+
 
         e.preventDefault();
 
         setError("");
 
 
-        try {
+
+        try{
+
 
             const response = await axios.post(
 
@@ -29,15 +38,17 @@ function Login() {
                 new URLSearchParams({
 
                     email: email,
+
                     password: password
 
                 }),
 
                 {
 
-                    headers: {
+                    headers:{
 
-                        "Content-Type": "application/x-www-form-urlencoded"
+                        "Content-Type":
+                        "application/x-www-form-urlencoded"
 
                     }
 
@@ -46,38 +57,80 @@ function Login() {
             );
 
 
-            console.log("Login Response:", response.data);
 
 
 
-            if(response.data.status === "success") {
+            console.log(
+                "Login Response:",
+                response.data
+            );
+
+
+
+
+
+
+            if(response.data.status === "success"){
+
 
 
                 const user = {
 
-                    userId: response.data.userId,
 
-                    name: response.data.name,
+                    userId:
+                    response.data.userId 
+                    ??
+                    response.data.user_id,
 
-                    email: response.data.email,
 
-                    role: response.data.role
+
+                    name:
+                    response.data.name,
+
+
+
+                    email:
+                    response.data.email,
+
+
+
+                    role:
+                    response.data.role
+
 
                 };
 
 
-                console.log("Saved User:", user);
 
 
 
-                // Check user id
+
+                console.log(
+                    "User Before Save:",
+                    user
+                );
+
+
+
+
+
+
                 if(!user.userId){
 
-                    setError("User ID not received from server");
+
+                    setError(
+                        "User ID missing from backend"
+                    );
+
 
                     return;
 
+
                 }
+
+
+
+
 
 
 
@@ -91,11 +144,17 @@ function Login() {
 
 
 
+
+
+
+
                 console.log(
 
-                    "Local Storage User:",
+                    "Saved Local User:",
 
-                    JSON.parse(localStorage.getItem("user"))
+                    JSON.parse(
+                        localStorage.getItem("user")
+                    )
 
                 );
 
@@ -103,62 +162,85 @@ function Login() {
 
 
 
-                if(user.role === "admin") {
+
+
+
+
+                if(user.role==="admin"){
 
 
                     navigate("/admin");
 
 
                 }
-                else if(user.role === "customer") {
+                else if(user.role==="customer"){
 
 
                     navigate("/home");
 
 
                 }
-                else {
+                else{
 
 
-                    setError("Invalid User Role");
+                    setError(
+                        "Invalid User Role"
+                    );
 
 
                 }
 
 
 
-            }
-            else {
 
-
-                setError("Invalid Email or Password");
 
 
             }
+            else{
+
+
+                setError(
+                    "Invalid Email or Password"
+                );
+
+
+            }
+
+
+
+
 
 
 
         }
-        catch(error) {
+        catch(error){
 
 
             console.log(error);
 
 
+
             if(error.response){
+
 
                 console.log(
                     "Backend Error:",
                     error.response.data
                 );
 
+
             }
 
 
-            setError("Login Failed");
+
+            setError(
+                "Login Failed"
+            );
 
 
         }
+
+
 
 
     };
@@ -166,7 +248,12 @@ function Login() {
 
 
 
-    return (
+
+
+
+
+
+    return(
 
 
         <div className="login-container">
@@ -175,14 +262,19 @@ function Login() {
             <div className="login-card">
 
 
+
                 <h2>
                     Login
                 </h2>
 
 
+
                 <p>
                     Welcome Back
                 </p>
+
+
+
 
 
 
@@ -198,24 +290,33 @@ function Login() {
                         </label>
 
 
+
                         <input
+
 
                             type="email"
 
+
                             placeholder="Enter email"
 
+
                             value={email}
+
 
                             onChange={(e)=>
                                 setEmail(e.target.value)
                             }
 
+
                             required
+
 
                         />
 
 
                     </div>
+
+
 
 
 
@@ -230,24 +331,34 @@ function Login() {
                         </label>
 
 
+
                         <input
+
 
                             type="password"
 
+
                             placeholder="Enter password"
 
+
                             value={password}
+
 
                             onChange={(e)=>
                                 setPassword(e.target.value)
                             }
 
+
                             required
+
 
                         />
 
 
                     </div>
+
+
+
 
 
 
@@ -270,6 +381,9 @@ function Login() {
 
 
 
+
+
+
                     <button
 
                         type="submit"
@@ -280,13 +394,17 @@ function Login() {
 
                         Login
 
+
                     </button>
 
 
 
 
 
+
                 </form>
+
+
 
 
 
@@ -302,6 +420,8 @@ function Login() {
                         Forgot Password?
 
                     </Link>
+
+
 
 
 
@@ -322,7 +442,10 @@ function Login() {
 
 
 
+
                 </div>
+
+
 
 
 
@@ -331,7 +454,10 @@ function Login() {
 
 
 
+
+
         </div>
+
 
 
     );
