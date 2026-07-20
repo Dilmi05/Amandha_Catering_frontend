@@ -1,83 +1,66 @@
 import { createContext, useState } from "react";
 
-
 export const CartContext = createContext();
-
 
 
 export function CartProvider({ children }) {
 
-
     const [cart, setCart] = useState([]);
 
 
-
-    // Add item
     const addToCart = (item) => {
 
+        setCart((previousCart) => {
 
-        const existing =
-            cart.find(
-                (x) => x.item_id === item.item_id
+            const existingItem = previousCart.find(
+                (cartItem) => cartItem.item_id === item.item_id
             );
 
 
-        if(existing){
+            if (existingItem) {
 
+                return previousCart.map((cartItem) =>
 
-            setCart(
-
-                cart.map((x)=>
-
-                    x.item_id === item.item_id
+                    cartItem.item_id === item.item_id
 
                     ?
 
                     {
-                        ...x,
-                        quantity:x.quantity + 1
+                        ...cartItem,
+                        quantity: cartItem.quantity + 1
                     }
 
                     :
 
-                    x
+                    cartItem
 
-                )
+                );
 
-            );
-
-
-        }
-        else{
+            }
 
 
-            setCart([
+            return [
 
-                ...cart,
+                ...previousCart,
 
                 {
                     ...item,
-                    quantity:1
+                    quantity: 1
                 }
 
-            ]);
+            ];
 
-
-        }
-
+        });
 
     };
 
 
 
+    const increase = (id) => {
 
-    // Increase quantity
-    const increase = (id)=>{
+        setCart((previousCart) =>
 
-
-        setCart(
-
-            cart.map(item =>
+            previousCart.map((item) =>
 
                 item.item_id === id
 
@@ -85,7 +68,7 @@ export function CartProvider({ children }) {
 
                 {
                     ...item,
-                    quantity:item.quantity + 1
+                    quantity: item.quantity + 1
                 }
 
                 :
@@ -96,20 +79,15 @@ export function CartProvider({ children }) {
 
         );
 
-
     };
 
 
 
+    const decrease = (id) => {
 
+        setCart((previousCart) =>
 
-    // Decrease quantity
-    const decrease = (id)=>{
-
-
-        setCart(
-
-            cart.map(item =>
+            previousCart.map((item) =>
 
                 item.item_id === id && item.quantity > 1
 
@@ -117,7 +95,7 @@ export function CartProvider({ children }) {
 
                 {
                     ...item,
-                    quantity:item.quantity - 1
+                    quantity: item.quantity - 1
                 }
 
                 :
@@ -128,50 +106,31 @@ export function CartProvider({ children }) {
 
         );
 
-
     };
 
 
 
+    const removeItem = (id) => {
 
+        setCart((previousCart) =>
 
+            previousCart.filter(
 
-    // Remove item
-    const removeItem = (id)=>{
-
-
-        setCart(
-
-            cart.filter(
-
-                item => item.item_id !== id
+                (item) => item.item_id !== id
 
             )
 
         );
 
-
     };
 
 
 
-
-
-
-
-    // Clear cart after order
-    const clearCart = ()=>{
-
+    const clearCart = () => {
 
         setCart([]);
 
-
     };
-
-
-
-
-
 
 
     return (
@@ -179,19 +138,12 @@ export function CartProvider({ children }) {
         <CartContext.Provider
 
             value={{
-
                 cart,
-
                 addToCart,
-
                 increase,
-
                 decrease,
-
                 removeItem,
-
                 clearCart
-
             }}
 
         >
@@ -201,6 +153,5 @@ export function CartProvider({ children }) {
         </CartContext.Provider>
 
     );
-
 
 }

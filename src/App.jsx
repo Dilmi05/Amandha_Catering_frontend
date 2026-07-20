@@ -12,6 +12,7 @@ import ItemPage from "./pages/item";
 import AdminHome from "./pages/adminhome";
 import AdminUsers from "./pages/adminuser";
 import AdminOrders from "./pages/adminorder";
+import MyOrders from "./pages/MyOrders";
 
 
 
@@ -52,6 +53,9 @@ return(
 <Route path="/admin/orders" element={<AdminOrders />} />
 
 <Route path="/admin/users"element={<AdminUsers />}/>
+
+<Route path="/myorders" element={<MyOrders />} />
+
 
 
 

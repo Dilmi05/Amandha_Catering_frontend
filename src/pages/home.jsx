@@ -3,172 +3,116 @@ import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../pages/cartcontext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import UserNavbar from "../components/UserNavbar";
 
 function Home() {
 
+    const { addToCart, cart } = useContext(CartContext);
 
-const { addToCart, cart } = useContext(CartContext);
+    const navigate = useNavigate();
 
-const navigate = useNavigate();
+    const [items, setItems] = useState([]);
 
+    useEffect(() => {
 
-const [items, setItems] = useState([]);
+        axios
+            .get("http://localhost:8080/api/items")
+            .then((response) => {
 
+                setItems(response.data);
 
+            })
+            .catch((error) => {
 
-useEffect(()=>{
+                console.log("Error loading items:", error);
 
+            });
 
-    axios
-    .get("http://localhost:8080/api/items")
-    .then((response)=>{
+    }, []);
 
-        setItems(response.data);
+    return (
 
-    })
-    .catch((error)=>{
+        <div className="home">
 
-        console.log("Error loading items:", error);
+            {/* Navbar */}
+            <UserNavbar />
 
-    });
+            <header className="home-header">
 
+                <h1>
+                    Amandha Catering Rentals
+                </h1>
 
-},[]);
+                <p>
+                    Quality catering equipment for your special events
+                </p>
 
+            </header>
 
+            <div className="item-container">
 
-return (
+                {
+                    items.map((item) => (
 
-<div className="home">
+                        <div
+                            className="item-card"
+                            key={item.itemId}
+                        >
 
+                            <img
+                                src="https://images.unsplash.com/photo-1547592180-85f173990554"
+                                alt={item.itemName}
+                            />
 
+                            <h2>
+                                {item.itemName}
+                            </h2>
 
-<header className="home-header">
+                            <p>
+                                {item.description}
+                            </p>
 
-<h1>
-Amandha Catering Rentals
-</h1>
+                            <p>
+                                Category: {item.category}
+                            </p>
 
-<p>
-Quality catering equipment for your special events
-</p>
+                            <p>
+                                Status: {item.available ? "Available" : "Not Available"}
+                            </p>
 
-</header>
+                            <p>
+                                Rs. {item.price}
+                            </p>
 
+                            <button
+                                disabled={!item.available}
+                                onClick={() => addToCart(item)}
+                            >
+                                {item.available ? "Book Now" : "Not Available"}
+                            </button>
 
+                        </div>
 
+                    ))
+                }
 
-<div className="item-container">
+            </div>
 
+            <div className="bottom-checkout">
 
-{
-items.map((item)=>(
+                <button
+                    className="checkout-btn"
+                    onClick={() => navigate("/cart")}
+                >
+                    Checkout Cart ({cart.length})
+                </button>
 
+            </div>
 
-<div 
-className="item-card" 
-key={item.itemId}
->
+        </div>
 
-
-
-{/* Image placeholder because database has no image column */}
-
-<img
-src="https://images.unsplash.com/photo-1547592180-85f173990554"
-alt={item.itemName}
-/>
-
-
-
-
-<h2>
-{item.itemName}
-</h2>
-
-
-
-<p>
-{item.description}
-</p>
-
-
-
-<p>
-Category: {item.category}
-</p>
-
-
-
-<p>
-Status: {item.available ? "Available" : "Not Available"}
-</p>
-
-<p>
-Rs. {item.price}
-</p>
-
-
-
-<button
-
-disabled={!item.available}
-
-onClick={()=>addToCart(item)}
-
->
-
-{
-item.available ? "Book Now" : "Not Available"
-}
-
-</button>
-
-
-
-
-</div>
-
-
-))
+    );
 
 }
-
-
-
-</div>
-
-
-
-
-
-<div className="bottom-checkout">
-
-
-<button
-
-className="checkout-btn"
-
-onClick={()=>navigate("/cart")}
-
->
-
-Checkout Cart ({cart.length})
-
-</button>
-
-
-</div>
-
-
-
-</div>
-
-
-);
-
-}
-
 
 export default Home;
