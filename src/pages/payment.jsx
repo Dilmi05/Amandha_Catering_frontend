@@ -18,9 +18,13 @@ function Payment() {
 
 
     const total = cart.reduce(
+
         (sum,item)=>
+
         sum + Number(item.price) * Number(item.quantity),
+
         0
+
     );
 
 
@@ -30,17 +34,17 @@ function Payment() {
 
 
 
+
     const [paymentMethod,setPaymentMethod] = useState("");
 
     const [loading,setLoading] = useState(false);
 
 
 
+
     const [customer,setCustomer] = useState({
 
-        customerId:Number(loggedUser.userId),
-
-        name:loggedUser.name || "",
+        name: loggedUser.name || "",
 
         phone:"",
 
@@ -56,33 +60,117 @@ function Payment() {
 
 
 
-    const handleCustomerChange=(e)=>{
 
 
-        setCustomer({
+    const [card,setCard] = useState({
 
-            ...customer,
+        holder:"",
 
-            [e.target.name]:e.target.value
+        number:"",
 
-        });
+        expiry:"",
 
+        cvv:""
 
-    };
-
-
-
+    });
 
 
-    const createOrder=async()=>{
+
+
+
+
+   const handleCustomerChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "phone") {
+        const phone = value.replace(/\D/g, "").slice(0, 10);
+
+        setCustomer((prev) => ({
+            ...prev,
+            phone,
+        }));
+    } else if (name === "name") {
+        const fullName = value.replace(/[^A-Za-z ]/g, "");
+
+        setCustomer((prev) => ({
+            ...prev,
+            name: fullName,
+        }));
+    } else {
+        setCustomer((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    }
+};
+
+
+
+
+
+    const handleCardChange = (e) => {
+    const { name, value } = e.target;
+
+    let newValue = value;
+
+    if (name === "holder") {
+        // Only letters and spaces
+        newValue = value.replace(/[^A-Za-z ]/g, "");
+    } else if (name === "number") {
+        // Only numbers, max 16 digits
+        newValue = value.replace(/\D/g, "").slice(0, 16);
+    } else if (name === "expiry") {
+        // MM/YY format
+        let numbers = value.replace(/\D/g, "").slice(0, 4);
+
+        if (numbers.length > 2) {
+            newValue = numbers.slice(0, 2) + "/" + numbers.slice(2);
+        } else {
+            newValue = numbers;
+        }
+    } else if (name === "cvv") {
+        // Only numbers, max 3 digits
+        newValue = value.replace(/\D/g, "").slice(0, 3);
+    }
+
+    setCard((prev) => ({
+        ...prev,
+        [name]: newValue,
+    }));
+};
+
+
+
+
+
+
+    const createOrder = async()=>{
+
+
+        if(loading)
+            return;
+
 
 
         if(cart.length===0){
 
-            alert("Cart Empty");
+            alert("Cart is empty");
+
             return;
 
         }
+
+
+
+        if(paymentMethod===""){
+
+            alert("Select payment method");
+
+            return;
+
+        }
+
+
 
 
 
@@ -93,25 +181,34 @@ function Payment() {
 
 
 
-            const orderResponse =
-            await axios.post(
 
-            "http://localhost:8080/api/orders",
+            // CREATE ORDER
 
-            {
+            const orderResponse = await axios.post(
+
+                "http://localhost:8080/api/orders",
+
+                {
 
 
-                customerId:Number(loggedUser.userId),
+                    customerId:Number(loggedUser.userId),
 
-                eventDate:customer.eventDate,
 
-                totalAmount:Number(total),
+                    eventDate:customer.eventDate,
 
-                status:"pending"
 
-            }
+                    totalAmount:Number(total),
+
+
+                    status:"pending"
+
+
+                }
 
             );
+
+
+
 
 
 
@@ -120,57 +217,94 @@ function Payment() {
 
 
 
+
+
+
+            // SAVE ORDER DETAILS
+
+
             for(const item of cart){
 
 
                 await axios.post(
 
-                "http://localhost:8080/api/orders/details",
+                    "http://localhost:8080/api/orders/details",
 
-                {
+                    {
 
-                    orderId:orderId,
 
-                    itemId:item.item_id,
+                        orderId:Number(orderId),
 
-                    quantity:item.quantity,
 
-                    price:item.price
+                        itemId:Number(item.itemId),
 
-                }
+
+                        quantity:Number(item.quantity),
+
+
+                        price:Number(item.price)
+
+
+                    }
 
                 );
+
 
             }
 
 
 
+
+
+
+
+            // SAVE PAYMENT
 
 
             await axios.post(
 
-            "http://localhost:8080/api/payments",
+                "http://localhost:8080/api/payments",
 
-            {
+                {
 
-                orderId:orderId,
 
-                amount:Number(total),
+                    orderId:Number(orderId),
 
-                method:paymentMethod,
 
-                status:"pending"
+                    amount:Number(total),
 
-            }
+
+                    method:paymentMethod,
+
+
+                    status:
+
+                    paymentMethod==="Online"
+
+                    ?
+
+                    "Paid"
+
+                    :
+
+                    "Pending"
+
+
+                }
 
             );
 
 
 
-            alert("Order Successful");
+
+
+
+            alert("Order placed successfully");
+
 
 
             clearCart();
+
 
 
             navigate("/myorders");
@@ -179,15 +313,18 @@ function Payment() {
 
         }
 
+
         catch(error){
 
 
             console.log(error);
 
-            alert("Order Failed");
+
+            alert("Order failed");
 
 
         }
+
 
         finally{
 
@@ -198,7 +335,12 @@ function Payment() {
         }
 
 
+
     };
+
+
+
+
 
 
 
@@ -210,250 +352,336 @@ return(
 <div className="payment-page">
 
 
+<UserNavbar />
 
-    {/* Navbar */}
 
-    <UserNavbar />
 
+<div className="payment-container">
 
 
 
+<div className="payment-card">
 
-    {/* Payment Content */}
 
 
-    <main className="payment-container">
+<h1>
+Catering Payment
+</h1>
 
 
 
-        <div className="payment-card">
 
 
+<h2>
+Customer Information
+</h2>
 
-            <h1>
-                Catering Payment
-            </h1>
 
 
 
+<input
+    type="text"
+    name="name"
+    placeholder="Full Name"
+    value={customer.name}
+    onChange={handleCustomerChange}
+/>
 
 
-            <h2>
-                Customer Information
-            </h2>
 
 
 
+<input
+    type="tel"
+    name="phone"
+    placeholder="Phone Number"
+    value={customer.phone}
+    onChange={handleCustomerChange}
+    maxLength={10}
+/>
 
-            <input
 
-            name="name"
 
-            value={customer.name}
 
-            onChange={handleCustomerChange}
 
-            placeholder="Full Name"
+<input
+    type="email"
+    name="email"
+    placeholder="Email"
+    value={customer.email}
+    onChange={handleCustomerChange}
+/>
 
-            />
 
 
 
 
+<textarea
 
-            <input
+name="address"
 
-            name="phone"
+placeholder="Delivery Address"
 
-            value={customer.phone}
+value={customer.address}
 
-            onChange={handleCustomerChange}
+onChange={handleCustomerChange}
 
-            placeholder="Phone Number"
+/>
 
-            />
 
 
 
 
 
-            <input
+<label>
+Event Date
+</label>
 
-            name="email"
 
-            value={customer.email}
 
-            onChange={handleCustomerChange}
+<input
 
-            placeholder="Email"
+type="date"
 
-            />
+name="eventDate"
 
+value={customer.eventDate}
 
+onChange={handleCustomerChange}
 
+/>
 
 
-            <textarea
 
-            name="address"
 
-            value={customer.address}
 
-            onChange={handleCustomerChange}
 
-            placeholder="Address"
+<label>
+Event Time
+</label>
 
-            />
 
 
+<input
 
+type="time"
 
+name="eventTime"
 
-            <label>
-                Event Date
-            </label>
+value={customer.eventTime}
 
+onChange={handleCustomerChange}
 
-            <input
+/>
 
-            type="date"
 
-            name="eventDate"
 
-            value={customer.eventDate}
 
-            onChange={handleCustomerChange}
 
-            />
 
 
+<h2>
 
+Total : Rs. {total}
 
+</h2>
 
-            <label>
-                Event Time
-            </label>
 
 
-            <input
 
-            type="time"
 
-            name="eventTime"
 
-            value={customer.eventTime}
 
-            onChange={handleCustomerChange}
+<h2>
+Payment Method
+</h2>
 
-            />
 
 
 
 
 
-            <h2>
 
-            Total : Rs. {total}
+<label className="radio-option">
 
-            </h2>
 
+<input
 
+type="radio"
 
+name="payment"
 
+value="Cash"
 
-            <h2>
-                Payment Method
-            </h2>
+checked={paymentMethod==="Cash"}
 
+onChange={(e)=>
 
+setPaymentMethod(e.target.value)
 
+}
 
-            <label className="radio-option">
+/>
 
 
-            <input
+Cash On Delivery
 
-            type="radio"
 
-            value="Cash"
+</label>
 
-            checked={paymentMethod==="Cash"}
 
-            onChange={(e)=>
-            setPaymentMethod(e.target.value)}
 
-            />
 
-            Cash On Delivery
 
 
-            </label>
 
 
 
+<label className="radio-option">
 
 
-            <label className="radio-option">
+<input
 
+type="radio"
 
-            <input
+name="payment"
 
-            type="radio"
+value="Online"
 
-            value="Online"
+checked={paymentMethod==="Online"}
 
-            checked={paymentMethod==="Online"}
+onChange={(e)=>
 
-            onChange={(e)=>
-            setPaymentMethod(e.target.value)}
+setPaymentMethod(e.target.value)
 
-            />
+}
 
-            Online Payment
+/>
 
 
-            </label>
+Online Payment
 
 
+</label>
 
 
 
 
-            <button
 
-            onClick={createOrder}
 
-            disabled={loading}
 
-            >
 
-            {
-                loading?
-                "Processing..."
-                :
-                "Place Order"
-            }
 
+{
+paymentMethod==="Online" &&
 
-            </button>
 
+<div className="card-box">
 
 
+<h3>
+Card Details
+</h3>
 
 
-        </div>
 
 
 
-    </main>
+<input
+    type="text"
+    name="holder"
+    placeholder="Card Holder Name"
+    value={card.holder}
+    onChange={handleCardChange}
+/>
 
 
 
 
 
-    {/* Footer */}
 
-    <UserFooter />
+<input
+    type="text"
+    name="number"
+    placeholder="Card Number"
+    value={card.number}
+    onChange={handleCardChange}
+    maxLength={16}
+/>
+
+
+
+
+
+<div className="card-row">
+
+
+<input
+    type="text"
+    name="expiry"
+    placeholder="MM/YY"
+    value={card.expiry}
+    onChange={handleCardChange}
+    maxLength={5}
+/>
+
+
+
+<input
+    type="password"
+    name="cvv"
+    placeholder="CVV"
+    value={card.cvv}
+    onChange={handleCardChange}
+    maxLength={3}
+/>
+
+
+
+</div>
+
+
+
+</div>
+
+
+}
+
+
+
+
+
+
+
+
+
+<button
+
+onClick={createOrder}
+
+disabled={loading}
+
+>
+
+
+{
+
+loading
+
+?
+
+"Processing..."
+
+:
+
+"Place Order"
+
+}
+
+
+</button>
+
+
 
 
 
@@ -461,10 +689,23 @@ return(
 </div>
 
 
+</div>
+
+
+
+
+<UserFooter />
+
+
+</div>
+
+
+
 );
 
 
 }
+
 
 
 export default Payment;

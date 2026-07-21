@@ -10,44 +10,51 @@ function ItemPage() {
 
 
     const emptyItem = {
-        item_name: "",
-        description: "",
-        category: "",
-        price: "",
-        image: "",
-        available: true
+
+        item_name:"",
+        description:"",
+        category:"",
+        price:"",
+        image:"",
+        available:true
+
     };
 
 
-    const [item, setItem] = useState(emptyItem);
 
-    const [items, setItems] = useState([]);
+    const [item,setItem] = useState(emptyItem);
 
-    const [editId, setEditId] = useState(null);
+    const [items,setItems] = useState([]);
+
+    const [editId,setEditId] = useState(null);
 
 
 
-    // Load items when page opens
-    useEffect(() => {
+
+
+    useEffect(()=>{
 
         getItems();
 
-    }, []);
+    },[]);
 
 
 
 
-    // Get all items
-    const getItems = async () => {
 
-        try {
+
+    // GET ITEMS
+
+    const getItems = async()=>{
+
+        try{
 
             const response = await axios.get(API_URL);
 
             setItems(response.data);
 
 
-        } catch(error) {
+        }catch(error){
 
             console.log(error);
 
@@ -61,18 +68,27 @@ function ItemPage() {
 
 
 
-    // Input change
-    const handleChange = (e) => {
 
 
-        const {name,value,type,checked} = e.target;
+    // INPUT CHANGE
+
+    const handleChange=(e)=>{
+
+
+        const {name,value,type,checked}=e.target;
 
 
         setItem({
 
             ...item,
 
-            [name]: type === "checkbox" ? checked : value
+            [name]:
+
+            type==="checkbox"
+            ?
+            checked
+            :
+            value
 
         });
 
@@ -83,23 +99,30 @@ function ItemPage() {
 
 
 
-    // Convert React data to Java Entity format
-    const formatItemData = () => {
 
 
-        return {
 
-            itemName: item.item_name,
 
-            description: item.description,
+    // FORMAT DATA FOR SPRING BOOT
 
-            category: item.category,
+    const formatItemData=()=>{
 
-            price: item.price,
 
-            image: item.image,
+        return{
 
-            available: item.available
+
+            itemName:item.item_name,
+
+            description:item.description,
+
+            category:item.category,
+
+            price:item.price,
+
+            image:item.image,
+
+            available:item.available
+
 
         };
 
@@ -110,17 +133,22 @@ function ItemPage() {
 
 
 
-    // Add / Update
-    const handleSubmit = async(e)=>{
+
+
+
+
+    // ADD UPDATE
+
+    const handleSubmit=async(e)=>{
 
 
         e.preventDefault();
 
 
-        try {
+        try{
 
 
-            const itemData = formatItemData();
+            const data=formatItemData();
 
 
 
@@ -131,7 +159,7 @@ function ItemPage() {
 
                     `${API_URL}/${editId}`,
 
-                    itemData
+                    data
 
                 );
 
@@ -147,7 +175,7 @@ function ItemPage() {
 
                     API_URL,
 
-                    itemData
+                    data
 
                 );
 
@@ -160,7 +188,6 @@ function ItemPage() {
 
 
             clearForm();
-
 
             getItems();
 
@@ -184,8 +211,12 @@ function ItemPage() {
 
 
 
-    // Edit button
-    const editItem = (data)=>{
+
+
+
+    // EDIT ITEM
+
+    const editItem=(data)=>{
 
 
         setItem({
@@ -207,7 +238,9 @@ function ItemPage() {
         });
 
 
+
         setEditId(data.itemId);
+
 
 
         window.scrollTo({
@@ -226,8 +259,12 @@ function ItemPage() {
 
 
 
-    // Delete
-    const deleteItem = async(id)=>{
+
+
+
+    // DELETE ITEM
+
+    const deleteItem=async(id)=>{
 
 
         if(!window.confirm("Delete this item?")){
@@ -273,8 +310,12 @@ function ItemPage() {
 
 
 
-    // Clear form
-    const clearForm = ()=>{
+
+
+
+    // CLEAR FORM
+
+    const clearForm=()=>{
 
 
         setItem(emptyItem);
@@ -288,14 +329,21 @@ function ItemPage() {
 
 
 
-    return (
 
 
-        <div className="item-container">
+    return(
 
 
 
-            <div className="item-card">
+        <div className="admin-item-page">
+
+
+
+
+
+            {/* FORM */}
+
+            <div className="admin-item-form">
 
 
                 <h2>
@@ -303,6 +351,7 @@ function ItemPage() {
                     {editId ? "Update Item" : "Add New Item"}
 
                 </h2>
+
 
 
 
@@ -352,6 +401,7 @@ function ItemPage() {
 
 
 
+
                     <label>
                         Category
                     </label>
@@ -374,25 +424,31 @@ function ItemPage() {
                             Select Category
                         </option>
 
+
                         <option value="Plates">
                             Plates
                         </option>
+
 
                         <option value="Tables">
                             Tables
                         </option>
 
+
                         <option value="Chairs">
                             Chairs
                         </option>
+
 
                         <option value="Glassware">
                             Glassware
                         </option>
 
+
                         <option value="Decoration">
                             Decoration
                         </option>
+
 
                         <option value="Cutlery">
                             Cutlery
@@ -400,6 +456,7 @@ function ItemPage() {
 
 
                     </select>
+
 
 
 
@@ -431,6 +488,7 @@ function ItemPage() {
 
 
 
+
                     <label>
                         Image URL
                     </label>
@@ -447,6 +505,8 @@ function ItemPage() {
                         onChange={handleChange}
 
                     />
+
+
 
 
 
@@ -479,17 +539,25 @@ function ItemPage() {
 
 
 
+
+
                     <button type="submit">
 
+
                         {editId ? "Update Item" : "Add Item"}
+
 
                     </button>
 
 
 
 
+
+
+
                     {
                         editId &&
+
 
                         <button
 
@@ -503,9 +571,11 @@ function ItemPage() {
 
                             Cancel
 
+
                         </button>
 
                     }
+
 
 
 
@@ -519,7 +589,13 @@ function ItemPage() {
 
 
 
-            <div className="table-card">
+
+
+
+            {/* TABLE */}
+
+
+            <div className="admin-item-table">
 
 
                 <h2>
@@ -528,42 +604,52 @@ function ItemPage() {
 
 
 
+
+
                 <table>
 
 
                     <thead>
 
-                    <tr>
 
-                        <th>
-                            Image
-                        </th>
-
-                        <th>
-                            Name
-                        </th>
-
-                        <th>
-                            Category
-                        </th>
-
-                        <th>
-                            Price
-                        </th>
-
-                        <th>
-                            Available
-                        </th>
-
-                        <th>
-                            Action
-                        </th>
+                        <tr>
 
 
-                    </tr>
+                            <th>
+                                Image
+                            </th>
+
+
+                            <th>
+                                Name
+                            </th>
+
+
+                            <th>
+                                Category
+                            </th>
+
+
+                            <th>
+                                Price
+                            </th>
+
+
+                            <th>
+                                Available
+                            </th>
+
+
+                            <th>
+                                Action
+                            </th>
+
+
+                        </tr>
 
 
                     </thead>
+
 
 
 
@@ -574,99 +660,136 @@ function ItemPage() {
 
                     {
 
-                    items.map((data)=>(
+                        items.map((data)=>(
 
 
-                    <tr key={data.itemId}>
+                            <tr key={data.itemId}>
 
 
-                        <td>
-
-                            <img
-
-                                src={data.image}
-
-                                className="item-image"
-
-                                alt="item"
-
-                            />
-
-                        </td>
+                                <td>
 
 
-                        <td>
-                            {data.itemName}
-                        </td>
+                                    <img
+
+                                        src={data.image}
+
+                                        className="item-image"
+
+                                        alt={data.itemName}
+
+                                    />
 
 
-                        <td>
-                            {data.category}
-                        </td>
-
-
-                        <td>
-                            LKR {data.price}
-                        </td>
-
-
-                        <td>
-
-                            {
-                                data.available
-                                ?
-                                "Yes"
-                                :
-                                "No"
-                            }
-
-                        </td>
+                                </td>
 
 
 
-                        <td>
 
+                                <td>
 
-                            <button
+                                    {data.itemName}
 
-                                className="edit-btn"
-
-                                onClick={()=>editItem(data)}
-
-                            >
-
-                                Edit
-
-                            </button>
+                                </td>
 
 
 
-                            <button
-
-                                className="delete-btn"
-
-                                onClick={()=>deleteItem(data.itemId)}
-
-                            >
-
-                                Delete
-
-                            </button>
 
 
-                        </td>
+                                <td>
+
+                                    {data.category}
+
+                                </td>
 
 
 
-                    </tr>
 
 
-                    ))
+                                <td>
+
+                                    LKR {data.price}
+
+                                </td>
+
+
+
+
+
+                                <td>
+
+
+                                    {
+
+                                        data.available
+
+                                        ?
+
+                                        "Yes"
+
+                                        :
+
+                                        "No"
+
+                                    }
+
+
+                                </td>
+
+
+
+
+
+
+
+                                <td>
+
+
+
+                                    <button
+
+                                        className="edit-btn"
+
+                                        onClick={()=>editItem(data)}
+
+                                    >
+
+                                        Edit
+
+                                    </button>
+
+
+
+
+
+                                    <button
+
+                                        className="delete-btn"
+
+                                        onClick={()=>deleteItem(data.itemId)}
+
+                                    >
+
+                                        Delete
+
+                                    </button>
+
+
+
+                                </td>
+
+
+
+
+                            </tr>
+
+
+                        ))
 
                     }
 
 
                     </tbody>
+
 
 
                 </table>
@@ -677,10 +800,14 @@ function ItemPage() {
 
 
 
+
+
         </div>
 
 
+
     );
+
 
 
 }

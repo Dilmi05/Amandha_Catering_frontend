@@ -21,11 +21,12 @@ function Cart() {
 
 
 
+
     const total = cart.reduce(
 
         (sum, item) =>
 
-            sum + (Number(item.price) * Number(item.quantity)),
+            sum + Number(item.price) * Number(item.quantity),
 
         0
 
@@ -34,21 +35,18 @@ function Cart() {
 
 
 
-    return (
 
+    return (
 
         <div className="home">
 
-
-            {/* Navbar */}
 
             <UserNavbar />
 
 
 
-            <h1>
-                Your Cart
-            </h1>
+            <h1>Your Cart</h1>
+
 
 
 
@@ -68,18 +66,13 @@ function Cart() {
 
                         <Link to="/home">
 
-
                             <button className="continue-btn">
-
 
                                 Continue Shopping
 
-
                             </button>
 
-
                         </Link>
-
 
 
                     </div>
@@ -93,141 +86,85 @@ function Cart() {
                     <>
 
 
+                    {
+                        cart.map((item)=> (
 
-                        {
-                            cart.map((item, index) => (
 
 
-                                <div
+                            <div
 
-                                    className="cart-item"
+                                className="cart-item"
 
-                                    key={item.item_id || index}
+                                key={item.itemId}
 
-                                >
+                            >
 
 
 
 
-                                    <img
+                                <img
 
-                                        src={item.image}
+                                    src={item.image}
 
-                                        alt={item.item_name}
+                                    alt={item.itemName}
 
-                                    />
+                                />
 
 
 
 
 
-                                    <div className="cart-details">
+                                <div className="cart-details">
 
 
 
+                                    <h2>
 
+                                        {item.itemName}
 
-                                        <h2>
+                                    </h2>
 
-                                            {item.item_name}
 
-                                        </h2>
 
 
 
+                                    <p>
 
+                                        Price : Rs. {item.price}
 
+                                    </p>
 
-                                        <p>
 
-                                            Price : Rs. {Number(item.price)}
 
-                                        </p>
 
 
 
 
+                                    <div className="quantity">
 
 
-                                        <div className="quantity">
 
+                                        <button
 
+                                            onClick={()=>
+                                                decrease(item.itemId)
+                                            }
 
+                                        >
 
+                                            -
 
-                                            <button
+                                        </button>
 
-                                                onClick={() =>
-                                                    decrease(item.item_id)
-                                                }
 
-                                            >
 
-                                                -
 
-                                            </button>
 
+                                        <span>
 
+                                            {item.quantity}
 
-
-
-
-
-                                            <span>
-
-                                                {item.quantity}
-
-                                            </span>
-
-
-
-
-
-
-                                            <button
-
-                                                onClick={() =>
-                                                    increase(item.item_id)
-                                                }
-
-                                            >
-
-                                                +
-
-                                            </button>
-
-
-
-
-
-
-                                        </div>
-
-
-
-
-
-
-
-                                        <p>
-
-
-                                            <strong>
-
-                                                Sub Total : Rs.
-
-                                                {
-                                                    Number(item.price)
-                                                    *
-                                                    Number(item.quantity)
-                                                }
-
-
-                                            </strong>
-
-
-                                        </p>
-
+                                        </span>
 
 
 
@@ -235,25 +172,15 @@ function Cart() {
 
                                         <button
 
-
-                                            className="remove-btn"
-
-
-                                            onClick={() =>
-                                                removeItem(item.item_id)
+                                            onClick={()=>
+                                                increase(item.itemId)
                                             }
-
 
                                         >
 
-
-                                            Remove
-
+                                            +
 
                                         </button>
-
-
-
 
 
 
@@ -263,33 +190,59 @@ function Cart() {
 
 
 
+
+                                    <p>
+
+                                        <strong>
+
+                                        Sub Total : Rs.
+
+                                        {
+                                            Number(item.price)
+                                            *
+                                            Number(item.quantity)
+                                        }
+
+
+                                        </strong>
+
+                                    </p>
+
+
+
+
+
+
+                                    <button
+
+                                        className="remove-btn"
+
+                                        onClick={()=>
+                                            removeItem(item.itemId)
+                                        }
+
+
+                                    >
+
+                                        Remove
+
+                                    </button>
+
+
+
+
+
                                 </div>
 
 
 
-                            ))
-
-                        }
+                            </div>
 
 
 
+                        ))
 
-
-                        <hr />
-
-
-
-
-
-
-                        <h2 className="total">
-
-
-                            Total Amount : Rs. {total}
-
-
-
-                        </h2>
+                    }
 
 
 
@@ -297,30 +250,7 @@ function Cart() {
 
 
 
-                        <div className="cart-buttons">
-
-
-
-
-
-
-                            <Link to="/home">
-
-
-
-                                <button className="continue-btn">
-
-
-
-                                    Continue Shopping
-
-
-
-                                </button>
-
-
-
-                            </Link>
+                    <hr />
 
 
 
@@ -328,32 +258,61 @@ function Cart() {
 
 
 
+                    <h2 className="total">
 
-                            <button
+                        Total Amount : Rs. {total}
 
-
-                                className="checkout-btn"
-
-
-                                onClick={() => navigate("/payment")}
+                    </h2>
 
 
-                            >
 
 
-                                Checkout
 
+
+                    <div className="cart-buttons">
+
+
+
+
+
+                        <Link to="/home">
+
+
+                            <button className="continue-btn">
+
+                                Continue Shopping
 
                             </button>
 
 
+                        </Link>
 
 
 
 
-                        </div>
 
 
+
+                        <button
+
+                            className="checkout-btn"
+
+                            onClick={()=>
+                                navigate("/payment")
+                            }
+
+                        >
+
+                            Checkout
+
+
+                        </button>
+
+
+
+
+
+                    </div>
 
 
 
@@ -362,10 +321,7 @@ function Cart() {
                     </>
 
 
-
                 )
-
-
 
             }
 
@@ -373,19 +329,15 @@ function Cart() {
 
 
 
-            {/* Footer */}
 
             <Footer />
-
 
 
 
         </div>
 
 
-
     );
-
 
 
 }

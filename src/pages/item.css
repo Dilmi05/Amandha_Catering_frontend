@@ -1,51 +1,66 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, Helvetica, sans-serif;
-}
+/* ================= ADMIN ITEM PAGE ================= */
 
+.admin-item-page{
 
-body{
-    background:#f4f6f9;
-}
+    min-height:100vh;
 
-
-/* Main Container */
-
-.item-container{
+    background:#f4f7ff;
 
     padding:40px;
 
+    font-family:Arial, Helvetica, sans-serif;
+
 }
 
 
 
-/* Add / Update Form Card */
+/* ================= FORM CARD ================= */
 
-.item-card{
 
-    background:white;
+.admin-item-form{
 
     width:500px;
 
-    margin:0 auto 40px auto;
+    max-width:100%;
+
+    margin:0 auto 40px;
+
+    background:white;
 
     padding:30px;
 
-    border-radius:12px;
+    border-radius:20px;
 
-    box-shadow:0 5px 15px rgba(0,0,0,0.15);
+    box-shadow:
+    0 10px 25px rgba(0,0,0,0.15);
 
 }
 
 
 
-.item-card h2{
+.admin-item-form h2{
 
     text-align:center;
 
+    color:#2563eb;
+
     margin-bottom:25px;
+
+}
+
+
+
+
+
+.admin-item-form label{
+
+    display:block;
+
+    margin-top:15px;
+
+    margin-bottom:8px;
+
+    font-weight:bold;
 
     color:#333;
 
@@ -54,26 +69,10 @@ body{
 
 
 
-.item-card label{
+.admin-item-form input,
+.admin-item-form textarea,
+.admin-item-form select{
 
-    display:block;
-
-    margin-top:15px;
-
-    margin-bottom:7px;
-
-    font-weight:bold;
-
-    color:#444;
-
-}
-
-
-
-
-.item-card input,
-.item-card textarea,
-.item-card select{
 
     width:100%;
 
@@ -81,7 +80,7 @@ body{
 
     border:1px solid #ccc;
 
-    border-radius:6px;
+    border-radius:10px;
 
     font-size:15px;
 
@@ -89,7 +88,7 @@ body{
 
 
 
-.item-card textarea{
+.admin-item-form textarea{
 
     height:100px;
 
@@ -101,7 +100,23 @@ body{
 
 
 
+.admin-item-form input:focus,
+.admin-item-form textarea:focus,
+.admin-item-form select:focus{
+
+
+    border-color:#2563eb;
+
+    outline:none;
+
+}
+
+
+
+
+
 .checkbox{
+
 
     display:flex;
 
@@ -126,22 +141,23 @@ body{
 
 
 
+/* BUTTON */
 
-/* Main Buttons */
 
-.item-card button{
+.admin-item-form button{
+
 
     width:100%;
 
-    margin-top:25px;
+    padding:14px;
 
-    padding:13px;
+    margin-top:25px;
 
     border:none;
 
-    border-radius:6px;
+    border-radius:25px;
 
-    background:#0d6efd;
+    background:#2563eb;
 
     color:white;
 
@@ -153,28 +169,18 @@ body{
 
 
 
-.item-card button:hover{
+.admin-item-form button:hover{
 
-    background:#0b5ed7;
+    background:#1d4ed8;
 
 }
 
 
 
-
-/* Cancel Button */
 
 .cancel-btn{
 
-    background:#6c757d !important;
-
-}
-
-
-
-.cancel-btn:hover{
-
-    background:#5c636a !important;
+    background:#6b7280 !important;
 
 }
 
@@ -182,17 +188,20 @@ body{
 
 
 
-/* Item Table Section */
+/* ================= TABLE ================= */
 
-.table-card{
+
+.admin-item-table{
+
 
     background:white;
 
     padding:30px;
 
-    border-radius:12px;
+    border-radius:20px;
 
-    box-shadow:0 5px 15px rgba(0,0,0,0.15);
+    box-shadow:
+    0 10px 25px rgba(0,0,0,0.15);
 
     overflow-x:auto;
 
@@ -200,11 +209,11 @@ body{
 
 
 
-.table-card h2{
+.admin-item-table h2{
+
+    color:#2563eb;
 
     margin-bottom:20px;
-
-    color:#333;
 
 }
 
@@ -212,7 +221,8 @@ body{
 
 
 
-table{
+.admin-item-table table{
+
 
     width:100%;
 
@@ -223,22 +233,21 @@ table{
 
 
 
-table th{
+.admin-item-table th{
 
-    background:#0d6efd;
+
+    background:#2563eb;
 
     color:white;
 
-    padding:14px;
-
-    text-align:center;
+    padding:15px;
 
 }
 
 
 
+.admin-item-table td{
 
-table td{
 
     padding:12px;
 
@@ -251,19 +260,18 @@ table td{
 
 
 
-table tr:hover{
+.admin-item-table tr:hover{
 
-    background:#f8f9fa;
+
+    background:#f1f5ff;
 
 }
 
 
 
 
-
-/* Item Image */
-
 .item-image{
+
 
     width:70px;
 
@@ -271,38 +279,32 @@ table tr:hover{
 
     object-fit:cover;
 
-    border-radius:8px;
+    border-radius:10px;
 
 }
 
 
 
 
-/* Action Buttons */
+/* ACTION BUTTONS */
+
 
 .edit-btn{
 
-    background:#198754;
+
+    background:#16a34a;
 
     color:white;
 
     border:none;
 
-    padding:8px 15px;
+    padding:8px 18px;
 
-    border-radius:5px;
-
-    margin-right:8px;
+    border-radius:20px;
 
     cursor:pointer;
 
-}
-
-
-
-.edit-btn:hover{
-
-    background:#157347;
+    margin-right:10px;
 
 }
 
@@ -311,15 +313,16 @@ table tr:hover{
 
 .delete-btn{
 
-    background:#dc3545;
+
+    background:#dc2626;
 
     color:white;
 
     border:none;
 
-    padding:8px 15px;
+    padding:8px 18px;
 
-    border-radius:5px;
+    border-radius:20px;
 
     cursor:pointer;
 
@@ -327,9 +330,18 @@ table tr:hover{
 
 
 
+
+.edit-btn:hover{
+
+    background:#15803d;
+
+}
+
+
+
 .delete-btn:hover{
 
-    background:#bb2d3b;
+    background:#b91c1c;
 
 }
 
@@ -337,12 +349,13 @@ table tr:hover{
 
 
 
-/* Responsive Design */
+/* MOBILE */
+
 
 @media(max-width:700px){
 
 
-    .item-container{
+    .admin-item-page{
 
         padding:20px;
 
@@ -350,16 +363,24 @@ table tr:hover{
 
 
 
-    .item-card{
+    .admin-item-form{
 
         width:100%;
 
     }
 
 
+    .admin-item-table{
+
+        padding:15px;
+
+    }
+
+
+
     table{
 
-        font-size:14px;
+        font-size:13px;
 
     }
 
