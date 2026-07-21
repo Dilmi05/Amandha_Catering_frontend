@@ -1,27 +1,40 @@
 import { createContext, useState } from "react";
 
+
 export const CartContext = createContext();
+
 
 
 export function CartProvider({ children }) {
 
+
     const [cart, setCart] = useState([]);
 
 
+
+    // Add item to cart
     const addToCart = (item) => {
+
 
         setCart((previousCart) => {
 
+
             const existingItem = previousCart.find(
-                (cartItem) => cartItem.item_id === item.item_id
+
+                (cartItem) => cartItem.itemId === item.itemId
+
             );
+
 
 
             if (existingItem) {
 
+
                 return previousCart.map((cartItem) =>
 
-                    cartItem.item_id === item.item_id
+
+                    cartItem.itemId === item.itemId
+
 
                     ?
 
@@ -30,13 +43,18 @@ export function CartProvider({ children }) {
                         quantity: cartItem.quantity + 1
                     }
 
+
                     :
 
                     cartItem
 
+
                 );
 
+
             }
+
+
 
 
             return [
@@ -50,19 +68,31 @@ export function CartProvider({ children }) {
 
             ];
 
+
+
         });
+
 
     };
 
 
 
+
+
+
+
+    // Increase quantity
     const increase = (id) => {
+
 
         setCart((previousCart) =>
 
+
             previousCart.map((item) =>
 
-                item.item_id === id
+
+                item.itemId === id
+
 
                 ?
 
@@ -71,25 +101,39 @@ export function CartProvider({ children }) {
                     quantity: item.quantity + 1
                 }
 
+
                 :
 
                 item
 
+
             )
 
+
         );
+
 
     };
 
 
 
+
+
+
+
+
+    // Decrease quantity
     const decrease = (id) => {
+
 
         setCart((previousCart) =>
 
+
             previousCart.map((item) =>
 
-                item.item_id === id && item.quantity > 1
+
+                item.itemId === id && item.quantity > 1
+
 
                 ?
 
@@ -98,60 +142,104 @@ export function CartProvider({ children }) {
                     quantity: item.quantity - 1
                 }
 
+
                 :
 
                 item
 
+
             )
 
+
         );
+
 
     };
 
 
 
+
+
+
+
+
+
+
+    // Remove item
     const removeItem = (id) => {
+
 
         setCart((previousCart) =>
 
+
             previousCart.filter(
 
-                (item) => item.item_id !== id
+                (item) => item.itemId !== id
 
             )
 
+
         );
+
 
     };
 
 
 
+
+
+
+
+
+    // Clear cart
     const clearCart = () => {
+
 
         setCart([]);
 
+
     };
+
+
+
+
+
+
 
 
     return (
 
+
         <CartContext.Provider
 
+
             value={{
+
                 cart,
+
                 addToCart,
+
                 increase,
+
                 decrease,
+
                 removeItem,
+
                 clearCart
+
             }}
+
 
         >
 
+
             {children}
+
 
         </CartContext.Provider>
 
+
     );
+
 
 }

@@ -3,50 +3,37 @@ import { useState } from "react";
 import axios from "axios";
 import "./login.css";
 
-
-function Register(){
-
+function Register() {
 
     const navigate = useNavigate();
 
+    const [user, setUser] = useState({
 
-
-    const [user,setUser] = useState({
-
-        name:"",
-        email:"",
-        password:""
+        name: "",
+        email: "",
+        password: "",
+        phone: "",
+        address: ""
 
     });
 
-
-
-
-
-    const handleChange = (e)=>{
+    const handleChange = (e) => {
 
         setUser({
 
             ...user,
 
-            [e.target.name]:e.target.value
+            [e.target.name]: e.target.value
 
         });
 
     };
 
-
-
-
-
-
-    const handleRegister = async(e)=>{
+    const handleRegister = async (e) => {
 
         e.preventDefault();
 
-
-        try{
-
+        try {
 
             await axios.post(
 
@@ -56,186 +43,132 @@ function Register(){
 
             );
 
-
-
             alert("Registration Successful");
-
 
             navigate("/");
 
-
-
-        }catch(error){
-
+        }
+        catch (error) {
 
             console.log(error);
 
-
             alert("Registration Failed");
-
 
         }
 
-
     };
 
-
-
-
-
-
-
-    return(
-
+    return (
 
         <div className="login-container">
 
-
             <div className="login-card">
-
 
                 <h2>Create Account</h2>
 
-
                 <p>Register New User</p>
-
-
-
-
 
                 <form onSubmit={handleRegister}>
 
+                    <div className="input-group">
 
+                        <label>Name</label>
 
+                        <input
+                            type="text"
+                            name="name"
+                            value={user.name}
+                            onChange={handleChange}
+                            placeholder="Enter name"
+                            required
+                        />
 
-                <div className="input-group">
+                    </div>
 
-                <label>Name</label>
+                    <div className="input-group">
 
-                <input 
+                        <label>Email</label>
 
-                type="text"
+                        <input
+                            type="email"
+                            name="email"
+                            value={user.email}
+                            onChange={handleChange}
+                            placeholder="Enter email"
+                            required
+                        />
 
-                name="name"
+                    </div>
 
-                value={user.name}
+                    <div className="input-group">
 
-                onChange={handleChange}
+                        <label>Phone Number</label>
 
-                placeholder="Enter name"
+                        <input
+                            type="text"
+                            name="phone"
+                            value={user.phone}
+                            onChange={handleChange}
+                            placeholder="Enter phone number"
+                            required
+                        />
 
-                required
+                    </div>
 
-                />
+                    <div className="input-group">
 
-                </div>
+                        <label>Address</label>
 
+                        <textarea
+                            name="address"
+                            value={user.address}
+                            onChange={handleChange}
+                            placeholder="Enter address"
+                            required
+                        ></textarea>
 
+                    </div>
 
+                    <div className="input-group">
 
+                        <label>Password</label>
 
+                        <input
+                            type="password"
+                            name="password"
+                            value={user.password}
+                            onChange={handleChange}
+                            placeholder="Create password"
+                            required
+                        />
 
+                    </div>
 
-
-                <div className="input-group">
-
-                <label>Email</label>
-
-                <input 
-
-                type="email"
-
-                name="email"
-
-                value={user.email}
-
-                onChange={handleChange}
-
-                placeholder="Enter email"
-
-                required
-
-                />
-
-                </div>
-
-
-
-
-
-
-
-
-                <div className="input-group">
-
-                <label>Password</label>
-
-                <input 
-
-                type="password"
-
-                name="password"
-
-                value={user.password}
-
-                onChange={handleChange}
-
-                placeholder="Create password"
-
-                required
-
-                />
-
-                </div>
-
-
-
-
-
-
-
-                <button 
-                className="login-btn"
-                type="submit"
-                >
-
-                    Register
-
-                </button>
-
-
-
+                    <button
+                        className="login-btn"
+                        type="submit"
+                    >
+                        Register
+                    </button>
 
                 </form>
 
-
-
-
-
                 <div className="footer-links">
-
 
                     <Link to="/">
 
-                    Already have account? Login
+                        Already have an account? Login
 
                     </Link>
 
-
                 </div>
-
-
-
 
             </div>
 
-
         </div>
 
-
-    )
+    );
 
 }
-
 
 export default Register;

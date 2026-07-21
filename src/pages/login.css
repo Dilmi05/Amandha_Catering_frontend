@@ -1,3 +1,6 @@
+
+
+
 .login-container {
 
     min-height: 100vh;
@@ -443,3 +446,40 @@
 
 
 }
+
+.input-group textarea{
+
+    width:100%;
+
+    padding:14px;
+
+    border-radius:15px;
+
+    border:2px solid #ddd;
+
+    font-size:15px;
+
+    outline:none;
+
+    transition:0.3s;
+
+    box-sizing:border-box;
+
+    height:90px;
+
+    resize:none;
+
+    font-family:'Poppins', Arial, sans-serif;
+
+}
+
+.input-group textarea:focus{
+
+    border-color:#1976d2;
+
+    background:#f5faff;
+
+    box-shadow:0 0 10px rgba(25,118,210,0.3);
+
+}
+

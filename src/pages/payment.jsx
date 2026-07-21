@@ -6,403 +6,465 @@ import { useNavigate } from "react-router-dom";
 import UserNavbar from "../components/UserNavbar";
 import UserFooter from "../components/Footer";
 
+
 function Payment() {
+
 
     const navigate = useNavigate();
 
+
     const { cart, clearCart } = useContext(CartContext);
 
+
+
     const total = cart.reduce(
-        (sum, item) =>
-            sum + Number(item.price) * Number(item.quantity),
+        (sum,item)=>
+        sum + Number(item.price) * Number(item.quantity),
         0
     );
+
+
 
     const loggedUser =
         JSON.parse(localStorage.getItem("user")) || {};
 
-    const [paymentMethod, setPaymentMethod] = useState("");
 
-    const [loading, setLoading] = useState(false);
 
-    const [customer, setCustomer] = useState({
+    const [paymentMethod,setPaymentMethod] = useState("");
 
-        customerId: Number(loggedUser.userId),
+    const [loading,setLoading] = useState(false);
 
-        name: loggedUser.name || "",
 
-        phone: "",
 
-        email: loggedUser.email || "",
+    const [customer,setCustomer] = useState({
 
-        address: "",
+        customerId:Number(loggedUser.userId),
 
-        eventDate: "",
+        name:loggedUser.name || "",
 
-        eventTime: ""
+        phone:"",
 
-    });
+        email:loggedUser.email || "",
 
-    const [card, setCard] = useState({
+        address:"",
 
-        holder: "",
-        number: "",
-        expiry: "",
-        cvv: ""
+        eventDate:"",
+
+        eventTime:""
 
     });
 
-    const handleCustomerChange = (e) => {
+
+
+    const handleCustomerChange=(e)=>{
+
 
         setCustomer({
 
             ...customer,
 
-            [e.target.name]: e.target.value
+            [e.target.name]:e.target.value
 
         });
 
-    };
-
-    const handleCardChange = (e) => {
-
-        setCard({
-
-            ...card,
-
-            [e.target.name]: e.target.value
-
-        });
 
     };
 
-    const createOrder = async () => {
 
-        if (loading)
-            return;
 
-        if (cart.length === 0) {
 
-            alert("Cart is empty");
-            return;
 
-        }
+    const createOrder=async()=>{
 
-        if (!loggedUser.userId) {
 
-            alert("User ID missing. Login again.");
+        if(cart.length===0){
 
+            alert("Cart Empty");
             return;
 
         }
 
-        if (customer.address.trim() === "") {
 
-            alert("Enter delivery address");
 
-            return;
+        try{
 
-        }
-
-        if (customer.eventDate === "") {
-
-            alert("Select event date");
-
-            return;
-
-        }
-
-        if (paymentMethod === "") {
-
-            alert("Select payment method");
-
-            return;
-
-        }
-
-        try {
 
             setLoading(true);
 
-            const orderResponse = await axios.post(
 
-                "http://localhost:8080/api/orders",
 
-                {
+            const orderResponse =
+            await axios.post(
 
-                    customerId: Number(loggedUser.userId),
+            "http://localhost:8080/api/orders",
 
-                    eventDate: customer.eventDate,
+            {
 
-                    totalAmount: Number(total),
 
-                    status: "pending"
+                customerId:Number(loggedUser.userId),
 
-                }
+                eventDate:customer.eventDate,
 
-            );
+                totalAmount:Number(total),
 
-            console.log(
-                "ORDER RESPONSE",
-                orderResponse.data
-            );
-
-            const orderId =
-                orderResponse.data.orderId;
-
-            if (!orderId) {
-
-                throw new Error(
-                    "Order ID not returned"
-                );
+                status:"pending"
 
             }
 
-            for (const item of cart) {
+            );
+
+
+
+            const orderId =
+            orderResponse.data.orderId;
+
+
+
+            for(const item of cart){
+
 
                 await axios.post(
 
-                    "http://localhost:8080/api/orders/details",
+                "http://localhost:8080/api/orders/details",
 
-                    {
+                {
 
-                        orderId: Number(orderId),
+                    orderId:orderId,
 
-                        itemId: Number(item.item_id),
+                    itemId:item.item_id,
 
-                        quantity: Number(item.quantity),
+                    quantity:item.quantity,
 
-                        price: Number(item.price)
+                    price:item.price
 
-                    }
+                }
 
                 );
 
             }
 
-            const paymentResponse = await axios.post(
 
-                "http://localhost:8080/api/payments",
 
-                {
 
-                    orderId: Number(orderId),
 
-                    amount: Number(total),
+            await axios.post(
 
-                    method: paymentMethod,
+            "http://localhost:8080/api/payments",
 
-                    status:
-                        paymentMethod === "Online"
-                            ? "paid"
-                            : "pending"
+            {
 
-                }
+                orderId:orderId,
+
+                amount:Number(total),
+
+                method:paymentMethod,
+
+                status:"pending"
+
+            }
 
             );
 
-            console.log(
-                "PAYMENT RESPONSE",
-                paymentResponse.data
-            );
 
-            alert(
-                "Order placed successfully"
-            );
+
+            alert("Order Successful");
+
 
             clearCart();
 
+
             navigate("/myorders");
 
-        }
-        catch (error) {
 
-            console.error(error);
-
-            console.log(
-                error.response?.data
-            );
-
-            alert(
-                "Order Failed"
-            );
 
         }
-        finally {
+
+        catch(error){
+
+
+            console.log(error);
+
+            alert("Order Failed");
+
+
+        }
+
+        finally{
+
 
             setLoading(false);
 
+
         }
+
 
     };
 
-    return (
-
-        <>
-            <UserNavbar />
-
-            <div className="payment-container">
-
-                <div className="payment-card">
-
-                    <h1>
-                        Catering Payment
-                    </h1>
-
-                    <h2>
-                        Customer Information
-                    </h2>
-
-                    <input
-                        name="name"
-                        placeholder="Full Name"
-                        value={customer.name}
-                        onChange={handleCustomerChange}
-                    />
-
-                    <input
-                        name="phone"
-                        placeholder="Phone Number"
-                        value={customer.phone}
-                        onChange={handleCustomerChange}
-                    />
-
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        value={customer.email}
-                        onChange={handleCustomerChange}
-                    />
-
-                    <textarea
-                        name="address"
-                        placeholder="Delivery Address"
-                        value={customer.address}
-                        onChange={handleCustomerChange}
-                    />
-
-                    <label>
-                        Event Date
-                    </label>
-
-                    <input
-                        type="date"
-                        name="eventDate"
-                        value={customer.eventDate}
-                        onChange={handleCustomerChange}
-                    />
-
-                    <label>
-                        Event Time
-                    </label>
-
-                    <input
-                        type="time"
-                        name="eventTime"
-                        value={customer.eventTime}
-                        onChange={handleCustomerChange}
-                    />
-
-                    <h2>
-                        Total : Rs. {total}
-                    </h2>
-
-                    <h2>
-                        Payment Method
-                    </h2>
-
-                    <label className="radio-option">
-
-                        <input
-                            type="radio"
-                            value="Cash"
-                            checked={paymentMethod === "Cash"}
-                            onChange={(e) =>
-                                setPaymentMethod(e.target.value)
-                            }
-                        />
-
-                        Cash On Delivery
-
-                    </label>
-
-                    <label className="radio-option">
-
-                        <input
-                            type="radio"
-                            value="Online"
-                            checked={paymentMethod === "Online"}
-                            onChange={(e) =>
-                                setPaymentMethod(e.target.value)
-                            }
-                        />
-
-                        Online Payment
-
-                    </label>
-
-                    {
-                        paymentMethod === "Online" &&
-
-                        <div className="card-box">
-
-                            <h3>
-                                Card Details
-                            </h3>
-
-                            <input
-                                name="holder"
-                                placeholder="Card Holder"
-                                onChange={handleCardChange}
-                            />
-
-                            <input
-                                name="number"
-                                placeholder="Card Number"
-                                onChange={handleCardChange}
-                            />
-
-                            <input
-                                name="expiry"
-                                placeholder="MM/YY"
-                                onChange={handleCardChange}
-                            />
-
-                            <input
-                                name="cvv"
-                                placeholder="CVV"
-                                type="password"
-                                onChange={handleCardChange}
-                            />
-
-                        </div>
-
-                    }
-
-                    <button
-                        onClick={createOrder}
-                        disabled={loading}
-                    >
-
-                        {
-                            loading
-                                ? "Processing..."
-                                : "Place Order"
-                        }
-
-                    </button>
-
-                </div>
-
-                <UserFooter />
 
 
-            </div>
-        </>
 
-    );
+
+return(
+
+
+<div className="payment-page">
+
+
+
+    {/* Navbar */}
+
+    <UserNavbar />
+
+
+
+
+
+    {/* Payment Content */}
+
+
+    <main className="payment-container">
+
+
+
+        <div className="payment-card">
+
+
+
+            <h1>
+                Catering Payment
+            </h1>
+
+
+
+
+
+            <h2>
+                Customer Information
+            </h2>
+
+
+
+
+            <input
+
+            name="name"
+
+            value={customer.name}
+
+            onChange={handleCustomerChange}
+
+            placeholder="Full Name"
+
+            />
+
+
+
+
+
+            <input
+
+            name="phone"
+
+            value={customer.phone}
+
+            onChange={handleCustomerChange}
+
+            placeholder="Phone Number"
+
+            />
+
+
+
+
+
+            <input
+
+            name="email"
+
+            value={customer.email}
+
+            onChange={handleCustomerChange}
+
+            placeholder="Email"
+
+            />
+
+
+
+
+
+            <textarea
+
+            name="address"
+
+            value={customer.address}
+
+            onChange={handleCustomerChange}
+
+            placeholder="Address"
+
+            />
+
+
+
+
+
+            <label>
+                Event Date
+            </label>
+
+
+            <input
+
+            type="date"
+
+            name="eventDate"
+
+            value={customer.eventDate}
+
+            onChange={handleCustomerChange}
+
+            />
+
+
+
+
+
+            <label>
+                Event Time
+            </label>
+
+
+            <input
+
+            type="time"
+
+            name="eventTime"
+
+            value={customer.eventTime}
+
+            onChange={handleCustomerChange}
+
+            />
+
+
+
+
+
+            <h2>
+
+            Total : Rs. {total}
+
+            </h2>
+
+
+
+
+
+            <h2>
+                Payment Method
+            </h2>
+
+
+
+
+            <label className="radio-option">
+
+
+            <input
+
+            type="radio"
+
+            value="Cash"
+
+            checked={paymentMethod==="Cash"}
+
+            onChange={(e)=>
+            setPaymentMethod(e.target.value)}
+
+            />
+
+            Cash On Delivery
+
+
+            </label>
+
+
+
+
+
+            <label className="radio-option">
+
+
+            <input
+
+            type="radio"
+
+            value="Online"
+
+            checked={paymentMethod==="Online"}
+
+            onChange={(e)=>
+            setPaymentMethod(e.target.value)}
+
+            />
+
+            Online Payment
+
+
+            </label>
+
+
+
+
+
+
+            <button
+
+            onClick={createOrder}
+
+            disabled={loading}
+
+            >
+
+            {
+                loading?
+                "Processing..."
+                :
+                "Place Order"
+            }
+
+
+            </button>
+
+
+
+
+
+        </div>
+
+
+
+    </main>
+
+
+
+
+
+    {/* Footer */}
+
+    <UserFooter />
+
+
+
+
+</div>
+
+
+);
+
 
 }
+
 
 export default Payment;
