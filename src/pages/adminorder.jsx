@@ -2,37 +2,25 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import "./adminorder.css";
 
-
 function AdminOrders() {
-
 
     const [orders, setOrders] = useState([]);
 
-
-
-    useEffect(()=>{
-
+    useEffect(() => {
         getOrders();
+    }, []);
 
-    },[]);
+    const getOrders = async () => {
 
-
-
-
-
-    const getOrders = async()=>{
-
-        try{
+        try {
 
             const response = await axios.get(
                 "http://localhost:8080/api/orders"
             );
 
-
             setOrders(response.data);
 
-
-        }catch(error){
+        } catch (error) {
 
             console.log(error);
 
@@ -42,70 +30,44 @@ function AdminOrders() {
 
     };
 
+    const updateStatus = async (id, status) => {
 
+        try {
 
+            await axios.put(
 
+                `http://localhost:8080/api/orders/${id}`,
 
+                {
+                    status: status
+                }
 
+            );
 
-    const updateStatus = async(id,status)=>{
+            alert("Order Status Updated");
 
+            getOrders();
 
-    try{
+        }
+        catch (error) {
 
+            console.log(error.response?.data || error);
 
-        await axios.put(
+            alert("Update Failed");
 
-            `http://localhost:8080/api/orders/${id}`,
+        }
 
-            {
-                status: status
-            }
+    };
 
-        );
+    const deleteOrder = async (id) => {
 
-
-        alert("Order Status Updated");
-
-
-        getOrders();
-
-
-
-    }
-    catch(error){
-
-
-        console.log(error.response?.data || error);
-
-
-        alert("Update Failed");
-
-
-    }
-
-
-};
-
-
-
-
-
-
-
-    const deleteOrder = async(id)=>{
-
-
-        if(!window.confirm("Delete this order?")){
+        if (!window.confirm("Delete this order?")) {
 
             return;
 
         }
 
-
-
-        try{
-
+        try {
 
             await axios.delete(
 
@@ -113,43 +75,27 @@ function AdminOrders() {
 
             );
 
-
             alert("Order Deleted");
-
 
             getOrders();
 
-
-
-        }catch(error){
+        } catch (error) {
 
             console.log(error);
 
         }
 
-
     };
-
-
-
-
-
-
 
     return (
 
         <div className="orders-container">
 
-
             <h1>
                 Manage Customer Orders
             </h1>
 
-
-
-
             <table>
-
 
                 <thead>
 
@@ -159,168 +105,157 @@ function AdminOrders() {
                             Order ID
                         </th>
 
-
                         <th>
                             Customer ID
                         </th>
-
 
                         <th>
                             Order Date
                         </th>
 
-
                         <th>
                             Event Date
                         </th>
-
 
                         <th>
                             Total Amount
                         </th>
 
-
                         <th>
-                            Status
+                            Order Status
                         </th>
 
+                        <th>
+                            Payment Method
+                        </th>
+
+                        <th>
+                            Payment Status
+                        </th>
 
                         <th>
                             Actions
                         </th>
 
-
                     </tr>
-
 
                 </thead>
 
-
-
-
-
                 <tbody>
 
+                    {
 
-                {
+                        orders.map((order) => (
 
-                    orders.map((order)=>(
+                            <tr key={order.orderId}>
 
+                                <td>
+                                    {order.orderId}
+                                </td>
 
-                        <tr key={order.orderId}>
+                                <td>
+                                    {order.customerId}
+                                </td>
 
+                                <td>
+                                    {order.orderDate}
+                                </td>
 
-                            <td>
-                                {order.orderId}
-                            </td>
+                                <td>
+                                    {order.eventDate}
+                                </td>
 
+                                <td>
+                                    LKR {order.totalAmount}
+                                </td>
 
-                            <td>
-                                {order.customerId}
-                            </td>
+                                <td>
 
+                                    <select
 
-                            <td>
-                                {order.orderDate}
-                            </td>
+                                        value={order.status}
 
+                                        onChange={(e) =>
 
-                            <td>
-                                {order.eventDate}
-                            </td>
+                                            updateStatus(
+                                                order.orderId,
+                                                e.target.value
+                                            )
 
+                                        }
 
-                            <td>
-                                LKR {order.totalAmount}
-                            </td>
+                                    >
 
+                                        <option value="pending">
+                                            Pending
+                                        </option>
 
-                            <td>
+                                        <option value="confirmed">
+                                            Confirmed
+                                        </option>
 
+                                        <option value="completed">
+                                            Completed
+                                        </option>
 
-                                <select
+                                        <option value="cancelled">
+                                            Cancelled
+                                        </option>
 
-                                value={order.status}
+                                    </select>
 
-                                onChange={(e)=>
+                                </td>
 
-                                    updateStatus(
-                                        order.orderId,
-                                        e.target.value
-                                    )
+                                <td>
+                                    {order.paymentMethod || "N/A"}
+                                </td>
 
-                                }
+                                <td>
 
-                                >
+                                    <span
+                                        style={{
+                                            color:
+                                                order.paymentStatus === "Paid"
+                                                    ? "green"
+                                                    : "red",
+                                            fontWeight: "bold"
+                                        }}
+                                    >
+                                        {order.paymentStatus || "N/A"}
+                                    </span>
 
+                                </td>
 
-                                    <option value="pending">
-                                        Pending
-                                    </option>
+                                <td>
 
+                                    <button
 
-                                    <option value="confirmed">
-                                        Confirmed
-                                    </option>
+                                        className="delete-btn"
 
+                                        onClick={() => deleteOrder(order.orderId)}
 
-                                    <option value="completed">
-                                        Completed
-                                    </option>
+                                    >
 
+                                        Delete
 
-                                    <option value="cancelled">
-                                        Cancelled
-                                    </option>
+                                    </button>
 
+                                </td>
 
-                                </select>
+                            </tr>
 
+                        ))
 
-                            </td>
-
-
-
-
-
-                            <td>
-
-
-                                <button
-
-                                className="delete-btn"
-
-                                onClick={()=>deleteOrder(order.orderId)}
-
-                                >
-
-                                    Delete
-
-                                </button>
-
-
-                            </td>
-
-
-                        </tr>
-
-
-                    ))
-
-                }
-
+                    }
 
                 </tbody>
 
-
             </table>
-
 
         </div>
 
     );
 
 }
-
 
 export default AdminOrders;
